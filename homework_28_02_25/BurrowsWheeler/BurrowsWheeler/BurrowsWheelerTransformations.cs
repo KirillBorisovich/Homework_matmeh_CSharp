@@ -11,16 +11,16 @@ class BurrowsWheelerTransformations
 
         private string str;
 
-        public (string resultString, int indexLastElement) Transformation(string input)
+        public (string resultString, int indexLastElement) Transformation()
         {
-            var len = input.Length;
+            var len = this.str.Length;
             var arrayChars = new char[len];
             var indexChars = new int[len];
             var result = new char[len];
 
             for (var i = 0; i < len; i++)
             {
-                arrayChars[i] = input[i];
+                arrayChars[i] = this.str[i];
                 indexChars[i] = i;
             }
 
@@ -28,7 +28,7 @@ class BurrowsWheelerTransformations
 
             for (var i = 0; i < len; i++)
             {
-                result[i] = input[(indexChars[i] - 1 + len) % len];
+                result[i] = this.str[(indexChars[i] - 1 + len) % len];
             }
 
             return (new string(result), indexChars[0]);
