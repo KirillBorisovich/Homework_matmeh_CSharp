@@ -1,4 +1,5 @@
 ﻿using BurrowsWheeler;
 
-var str = ".BANANA.";
-//(string result, int index) = BurrowsWheelerTransformations.DirectTransformation(str).
+BurrowsWheelerTransformations.DirectTransformation asdas = new(".BANANA.");
+(string result, int index) = asdas.Transformation();
+Console.WriteLine($"{result}, {index}");

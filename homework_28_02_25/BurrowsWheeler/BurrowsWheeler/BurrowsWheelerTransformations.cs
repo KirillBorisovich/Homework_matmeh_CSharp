@@ -14,24 +14,35 @@ class BurrowsWheelerTransformations
         public (string resultString, int indexLastElement) Transformation()
         {
             var len = this.str.Length;
-            var arrayChars = new char[len];
-            var indexChars = new int[len];
+            var shiftIndices = new int[len];
             var result = new char[len];
 
             for (var i = 0; i < len; i++)
             {
-                arrayChars[i] = this.str[i];
-                indexChars[i] = i;
+                shiftIndices[i] = i;
             }
 
-            Array.Sort(arrayChars, indexChars);
+            Array.Sort(shiftIndices, (a, b) =>
+            {
+                for (var i = 0; i < len; i++)
+                {
+                    var charA = this.str[(a + i) % len];
+                    var charB = this.str[(b + i) % len];
+
+                    if (charA != charB)
+                    {
+                        return charA.CompareTo(charB);
+                    }
+                }
+                return 0;
+            });
 
             for (var i = 0; i < len; i++)
             {
-                result[i] = this.str[(indexChars[i] - 1 + len) % len];
+                result[i] = this.str[(shiftIndices[i] - 1 + len) % len];
             }
 
-            return (new string(result), indexChars[0]);
+            return (new string(result), shiftIndices[0]);
         }
     }
 }
