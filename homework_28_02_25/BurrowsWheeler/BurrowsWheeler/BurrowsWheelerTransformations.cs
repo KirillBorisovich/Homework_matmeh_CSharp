@@ -37,12 +37,22 @@ class BurrowsWheelerTransformations
                 return 0;
             });
 
+            var lastIndex = -1;
             for (var i = 0; i < len; i++)
             {
                 result[i] = this.str[(shiftIndices[i] - 1 + len) % len];
+                if ((shiftIndices[i] + 1 + len) % len == len - 1)
+                {
+                    lastIndex = i;
+                }
             }
 
-            return (new string(result), shiftIndices[0]);
+            return (new string(result), lastIndex);
         }
+    }
+
+    public class InverseTransformation
+    {
+
     }
 }
