@@ -1,8 +1,16 @@
 ﻿namespace BurrowsWheeler;
 
+/// <summary>
+/// Burroughs Wheeler Transformation Classroom.
+/// </summary>
 public class BurrowsWheelerTransformations
 {
-    public static (string resultString, int indexLastElement) DirectTransformation(string str)
+    /// <summary>
+    /// Direct transformation Burroughs Wheeler.
+    /// </summary>
+    /// <param name="str">The string to be transformed.</param>
+    /// <returns>Transformed string.</returns>
+    public static (string ResultString, int IndexLastElement) DirectTransformation(string str)
     {
         var len = str.Length;
         var shiftIndices = new int[len];
@@ -25,6 +33,7 @@ public class BurrowsWheelerTransformations
                     return charA.CompareTo(charB);
                 }
             }
+
             return 0;
         });
 
@@ -41,6 +50,12 @@ public class BurrowsWheelerTransformations
         return (new string(result), lastIndex);
     }
 
+    /// <summary>
+    /// Inverse transformation Burroughs Wheeler.
+    /// </summary>
+    /// <param name="str"> The string to be transformed. </param>
+    /// <param name="lastIndex"> Position of the original row in the cyclic shift table. </param>
+    /// <returns> Original line. </returns>
     public static string InverseTransformation(string str, int lastIndex)
     {
         var len = str.Length;
