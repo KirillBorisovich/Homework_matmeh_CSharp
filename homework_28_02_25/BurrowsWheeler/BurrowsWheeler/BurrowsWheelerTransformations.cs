@@ -10,8 +10,13 @@ public class BurrowsWheelerTransformations
     /// </summary>
     /// <param name="str">The string to be transformed.</param>
     /// <returns>Transformed string.</returns>
-    public static (string ResultString, int IndexLastElement) DirectTransformation(string str)
+    public static (string? ResultString, int IndexLastElement) DirectTransformation(string? str)
     {
+        if (string.IsNullOrEmpty(str))
+        {
+            return (null, 0);
+        }
+
         var len = str.Length;
         var shiftIndices = new int[len];
         var result = new char[len];
@@ -56,29 +61,39 @@ public class BurrowsWheelerTransformations
     /// <param name="str"> The string to be transformed. </param>
     /// <param name="lastIndex"> Position of the original row in the cyclic shift table. </param>
     /// <returns> Original line. </returns>
-    public static string InverseTransformation(string str, int lastIndex)
+    public static string? InverseTransformation(string? str, int lastIndex)
     {
+        if (string.IsNullOrEmpty(str) || lastIndex < 0)
+        {
+            return null;
+        }
+
         var len = str.Length;
-        var alphabet = 256;
-        var counter = new int[alphabet];
-        var inverseTransformVector = new int[alphabet];
+        var counter = new Dictionary<char, int>();
+        var inverseTransformVector = new int[len];
 
         for (var i = 0; i < len; i++)
         {
-            counter[(int)str[i]]++;
+            if (!counter.ContainsKey(str[i]))
+            {
+                counter[str[i]] = 0;
+            }
+
+            counter[str[i]]++;
         }
 
-        var sum = 0;
-        for (int i = 0; i < alphabet; i++)
+        var positions = new Dictionary<char, int>();
+        int sum = 0;
+        foreach (var kvp in counter.OrderBy(kvp => kvp.Key))
         {
-            sum += counter[i];
-            counter[i] = sum - counter[i];
+            positions[kvp.Key] = sum;
+            sum += kvp.Value;
         }
 
         for (var i = 0; i < len; i++)
         {
-            inverseTransformVector[counter[(int)str[i]]] = i;
-            counter[(int)str[i]]++;
+            inverseTransformVector[positions[str[i]]] = i;
+            positions[str[i]]++;
         }
 
         var result = new char[len];

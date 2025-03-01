@@ -1,6 +1,10 @@
 ﻿using BurrowsWheeler;
 
-(string result, int index) = BurrowsWheelerTransformations.DirectTransformation("BANANA");
+Console.WriteLine("Enter the word: ");
+string? input = Console.ReadLine();
 
-Console.WriteLine($"{result}, {index}");
-Console.WriteLine($"{BurrowsWheelerTransformations.InverseTransformation(result, index)}");
+(string? result, int index) = BurrowsWheelerTransformations.DirectTransformation(input);
+
+Console.WriteLine($"\nDirect transformation: {result}, {index}\n");
+Console.WriteLine("Inverse transformation: " +
+    $"{BurrowsWheelerTransformations.InverseTransformation(result, index)}\n");
