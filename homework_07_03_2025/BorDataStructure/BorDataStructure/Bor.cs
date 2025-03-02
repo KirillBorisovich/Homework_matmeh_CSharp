@@ -4,7 +4,7 @@ namespace BorDataStructure;
 
 public class Bor
 {
-    public int Size { get; } = 0;
+    public int Size { get; private set; } = 0;
     private Node root = new();
 
     private class Node
@@ -15,6 +15,7 @@ public class Bor
 
     public bool Add(string str)
     {
+        this.Size++;
         var missingLine = false;
         var len = str.Length;
         var node = this.root;
