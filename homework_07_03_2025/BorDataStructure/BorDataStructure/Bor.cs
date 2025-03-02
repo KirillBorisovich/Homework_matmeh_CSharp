@@ -15,89 +15,136 @@ public class Bor
     /// <summary>
     /// Add a word to the structure.
     /// </summary>
-    /// <param name="str">String to add.</param>
+    /// <param name="element">String to add.</param>
     /// <returns>Returns true if such a row does not exist yet.</returns>
-    public bool Add(string str)
+    public bool Add(string element)
     {
         var missingLine = false;
-        var len = str.Length;
-        var node = this.root;
-
-        for (var i = 0; i < len; i++)
-        {
-            if (!node.Nodes.ContainsKey(str[i]))
-            {
-                missingLine = true;
-                node.Nodes[str[i]] = new Node
-                {
-                    EndOfWord = i == len - 1,
-                };
-            }
-            else if (!node.Nodes[str[i]].EndOfWord && i == len - 1)
-            {
-                missingLine = true;
-                node.Nodes[str[i]].EndOfWord = true;
-            }
-
-            node = node.Nodes[str[i]];
-        }
-
-        if (missingLine)
+        if (RecursiveAddition(element, this.root, 0, ref missingLine))
         {
             this.Size++;
-        }
-
-        return missingLine;
-    }
-
-    /// <summary>
-    /// Presence of a word in a structure.
-    /// </summary>
-    /// <param name="str">String to check.</param>
-    /// <returns>Returns true if such a string exists.</returns>
-    public bool Contains(string str)
-    {
-        (bool contains, Node node) = this.FindEndOfLine(str);
-        return contains;
-    }
-
-    /// <summary>
-    /// Remove word from structure.
-    /// </summary>
-    /// <param name="str">String to remove.</param>
-    /// <returns>Returns true if such a row existed.</returns>
-    public bool Remove(string str)
-    {
-        (bool contains, Node node) = this.FindEndOfLine(str);
-        if (contains)
-        {
-            node.EndOfWord = false;
             return true;
         }
 
         return false;
     }
 
-    private (bool Contains, Node Node) FindEndOfLine(string str)
+    /// <summary>
+    /// Presence of a word in a structure.
+    /// </summary>
+    /// <param name="element">String to check.</param>
+    /// <returns>Returns true if such a string exists.</returns>
+    public bool Contains(string element)
     {
-        var len = str.Length;
+        var len = element.Length;
         var node = this.root;
         for (var i = 0; i < len; i++)
         {
-            if (!node.Nodes.ContainsKey(str[i]) || (i == len - 1 && !node.Nodes[str[i]].EndOfWord))
+            if (!node.Nodes.ContainsKey(element[i]) || (i == len - 1 && !node.Nodes[element[i]].EndOfWord))
             {
-                return (false, node);
+                return false;
             }
 
-            node = node.Nodes[str[i]];
+            node = node.Nodes[element[i]];
         }
 
-        return (true, node);
+        return true;
+    }
+
+    /// <summary>
+    /// Number of lines that start with the given prefix.
+    /// </summary>
+    /// <param name="prefix">Prefix to check.</param>
+    /// <returns>Returns number of line thath start.</returns>
+    public int HowManyStartsWithPrefix(string prefix)
+    {
+        var len = prefix.Length;
+        var node = this.root;
+        for (var i = 0; i < len; i++)
+        {
+            if (!node.Nodes.ContainsKey(prefix[i]))
+            {
+                return 0;
+            }
+
+            node = node.Nodes[prefix[i]];
+        }
+
+        return node.NumberOfWordsAfterPrefix;
+    }
+
+    /// <summary>
+    /// Remove word from structure.
+    /// </summary>
+    /// <param name="element">String to remove.</param>
+    /// <returns>Returns true if such a row existed.</returns>
+    public bool Remove(string element)
+    {
+        return RecursiveRemove(element, this.root, 0);
+    }
+
+    private static bool RecursiveAddition(string element, Node node, int index, ref bool missingLine)
+    {
+        if (index < element.Length && !node.Nodes.ContainsKey(element[index]))
+        {
+            missingLine = true;
+            node.Nodes[element[index]] = new Node();
+        }
+        else if (index == element.Length && !node.EndOfWord)
+        {
+            node.EndOfWord = true;
+            missingLine = true;
+        }
+
+        if (index < element.Length && RecursiveAddition(element, node.Nodes[element[index]], index + 1, ref missingLine))
+        {
+            node.NumberOfWordsAfterPrefix++;
+        }
+
+        return missingLine;
+    }
+
+    private static bool RecursiveRemove(string element, Node node, int index)
+    {
+        if (index == element.Length && !node.EndOfWord)
+        {
+            return false;
+        }
+        else if (index == element.Length && node.EndOfWord)
+        {
+            node.EndOfWord = false;
+            return true;
+        }
+
+        var theResenceOfTheWord = false;
+        if (index < element.Length)
+        {
+            if (!node.Nodes.ContainsKey(element[index]))
+            {
+                return false;
+            }
+
+            theResenceOfTheWord = RecursiveRemove(element, node.Nodes[element[index]], index + 1);
+        }
+
+        if (theResenceOfTheWord)
+        {
+            if (node.Nodes[element[index]].NumberOfWordsAfterPrefix == 0 && !node.Nodes[element[index]].EndOfWord)
+            {
+                node.Nodes.Remove(element[index]);
+            }
+
+            node.NumberOfWordsAfterPrefix--;
+        }
+
+        return theResenceOfTheWord;
     }
 
     private class Node
     {
         public bool EndOfWord { get; set; } = false;
+
+        public int NumberOfWordsAfterPrefix { get; set; } = 0;
 
         public Dictionary<char, Node> Nodes { get; set; } = [];
     }
