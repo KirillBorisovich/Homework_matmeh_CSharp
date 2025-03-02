@@ -15,10 +15,10 @@ public class Bor
 
     public bool Add(string str)
     {
-        this.Size++;
         var missingLine = false;
         var len = str.Length;
         var node = this.root;
+
         for (var i = 0; i < len; i++)
         {
             if (!node.Nodes.ContainsKey(str[i]))
@@ -34,6 +34,12 @@ public class Bor
             }
             node = node.Nodes[str[i]];
         }
+        
+        if (missingLine)
+        {
+            this.Size++;
+        }
+
         return missingLine;
     }
 
