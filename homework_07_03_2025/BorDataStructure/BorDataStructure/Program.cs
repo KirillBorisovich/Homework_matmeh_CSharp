@@ -9,5 +9,3 @@ Console.WriteLine($"{qwe.Contains("qwe")}");
 Console.WriteLine($"{qwe.Remove("qwe")}");
 Console.WriteLine($"{qwe.Contains("qwe")}");
 Console.WriteLine($"{qwe.Remove("qwe")}");
-
-

@@ -1,23 +1,27 @@
-﻿using Microsoft.Win32.SafeHandles;
+﻿namespace BorDataStructure;
 
-namespace BorDataStructure;
-
+/// <summary>
+/// Data structure for storing strings.
+/// </summary>
 public class Bor
 {
+    private readonly Node root = new();
+
+    /// <summary>
+    ///  Gets number of words in the structure.
+    /// </summary>
     public int Size { get; private set; } = 0;
-    private Node root = new();
 
-    private class Node
-    {
-        public bool EndOfWord { get; set; } = false;
-        public Dictionary<char, Node> Nodes { get; set; } = new();
-    }
-
+    /// <summary>
+    /// Add a word to the structure.
+    /// </summary>
+    /// <param name="str">String to add.</param>
+    /// <returns>Returns true if such a row does not exist yet.</returns>
     public bool Add(string str)
     {
-            var missingLine = false;
-            var len = str.Length;
-            var node = this.root;
+        var missingLine = false;
+        var len = str.Length;
+        var node = this.root;
 
         for (var i = 0; i < len; i++)
         {
@@ -34,7 +38,7 @@ public class Bor
             }
             node = node.Nodes[str[i]];
         }
-        
+
         if (missingLine)
         {
             this.Size++;
@@ -43,7 +47,34 @@ public class Bor
         return missingLine;
     }
 
-    private (bool contains, Node node) findEndOfLine(string str)
+    /// <summary>
+    /// Presence of a word in a structure.
+    /// </summary>
+    /// <param name="str">String to check.</param>
+    /// <returns>Returns true if such a string exists.</returns>
+    public bool Contains(string str)
+    {
+        (bool contains, Node node) = this.FindEndOfLine(str);
+        return contains;
+    }
+
+    /// <summary>
+    /// Remove word from structure.
+    /// </summary>
+    /// <param name="str">String to remove.</param>
+    /// <returns>Returns true if such a row existed.</returns>
+    public bool Remove(string str)
+    {
+        (bool contains, Node node) = this.FindEndOfLine(str);
+        if (contains)
+        {
+            node.EndOfWord = false;
+            return true;
+        }
+        return false;
+    }
+
+    private (bool Contains, Node Node) FindEndOfLine(string str)
     {
         var len = str.Length;
         var node = this.root;
@@ -53,25 +84,17 @@ public class Bor
             {
                 return (false, node);
             }
+
             node = node.Nodes[str[i]];
         }
-        return (true, node);
-    } 
 
-    public bool Contains(string str)
-    {
-        (bool contains, Node node) = findEndOfLine(str);
-        return contains;
+        return (true, node);
     }
 
-    public bool Remove(string str)
+    private class Node
     {
-        (bool contains, Node node) = findEndOfLine(str);
-        if (contains)
-        {
-            node.EndOfWord = false;
-            return true;
-        }
-        return false;
+        public bool EndOfWord { get; set; } = false;
+
+        public Dictionary<char, Node> Nodes { get; set; } = new();
     }
 }
