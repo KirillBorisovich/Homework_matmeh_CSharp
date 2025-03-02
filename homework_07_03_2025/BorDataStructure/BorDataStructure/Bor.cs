@@ -15,9 +15,9 @@ public class Bor
 
     public bool Add(string str)
     {
-        var missingLine = false;
-        var len = str.Length;
-        var node = this.root;
+            var missingLine = false;
+            var len = str.Length;
+            var node = this.root;
 
         for (var i = 0; i < len; i++)
         {
@@ -43,7 +43,7 @@ public class Bor
         return missingLine;
     }
 
-    public bool Contains(string str)
+    private (bool contains, Node node) findEndOfLine(string str)
     {
         var len = str.Length;
         var node = this.root;
@@ -51,10 +51,27 @@ public class Bor
         {
             if (!node.Nodes.ContainsKey(str[i]) || (i == len - 1 && !node.Nodes[str[i]].EndOfWord))
             {
-                return false;
+                return (false, node);
             }
             node = node.Nodes[str[i]];
         }
-        return true;
+        return (true, node);
+    } 
+
+    public bool Contains(string str)
+    {
+        (bool contains, Node node) = findEndOfLine(str);
+        return contains;
+    }
+
+    public bool Remove(string str)
+    {
+        (bool contains, Node node) = findEndOfLine(str);
+        if (contains)
+        {
+            node.EndOfWord = false;
+            return true;
+        }
+        return false;
     }
 }
