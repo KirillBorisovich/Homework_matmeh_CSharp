@@ -19,6 +19,11 @@ public class Bor
     /// <returns>Returns true if such a row does not exist yet.</returns>
     public bool Add(string element)
     {
+        if (string.IsNullOrEmpty(element))
+        {
+            return false;
+        }
+
         var missingLine = false;
         if (RecursiveAddition(element, this.root, 0, ref missingLine))
         {
@@ -36,6 +41,11 @@ public class Bor
     /// <returns>Returns true if such a string exists.</returns>
     public bool Contains(string element)
     {
+        if (string.IsNullOrEmpty(element))
+        {
+            return false;
+        }
+
         var len = element.Length;
         var node = this.root;
         for (var i = 0; i < len; i++)
@@ -52,12 +62,32 @@ public class Bor
     }
 
     /// <summary>
+    /// Remove word from structure.
+    /// </summary>
+    /// <param name="element">String to remove.</param>
+    /// <returns>Returns true if such a row existed.</returns>
+    public bool Remove(string element)
+    {
+        if (string.IsNullOrEmpty(element))
+        {
+            return false;
+        }
+
+        return RecursiveRemove(element, this.root, 0);
+    }
+
+    /// <summary>
     /// Number of lines that start with the given prefix.
     /// </summary>
     /// <param name="prefix">Prefix to check.</param>
     /// <returns>Returns number of line thath start.</returns>
     public int HowManyStartsWithPrefix(string prefix)
     {
+        if (string.IsNullOrEmpty(prefix))
+        {
+            return 0;
+        }
+
         var len = prefix.Length;
         var node = this.root;
         for (var i = 0; i < len; i++)
@@ -71,16 +101,6 @@ public class Bor
         }
 
         return node.NumberOfWordsAfterPrefix;
-    }
-
-    /// <summary>
-    /// Remove word from structure.
-    /// </summary>
-    /// <param name="element">String to remove.</param>
-    /// <returns>Returns true if such a row existed.</returns>
-    public bool Remove(string element)
-    {
-        return RecursiveRemove(element, this.root, 0);
     }
 
     private static bool RecursiveAddition(string element, Node node, int index, ref bool missingLine)
