@@ -28,14 +28,17 @@ public class Bor
             if (!node.Nodes.ContainsKey(str[i]))
             {
                 missingLine = true;
-                node.Nodes[str[i]] = new Node();
-                node.Nodes[str[i]].EndOfWord = i == len - 1;
+                node.Nodes[str[i]] = new Node
+                {
+                    EndOfWord = i == len - 1,
+                };
             }
             else if (!node.Nodes[str[i]].EndOfWord && i == len - 1)
             {
                 missingLine = true;
                 node.Nodes[str[i]].EndOfWord = true;
             }
+
             node = node.Nodes[str[i]];
         }
 
@@ -71,6 +74,7 @@ public class Bor
             node.EndOfWord = false;
             return true;
         }
+
         return false;
     }
 
@@ -95,6 +99,6 @@ public class Bor
     {
         public bool EndOfWord { get; set; } = false;
 
-        public Dictionary<char, Node> Nodes { get; set; } = new();
+        public Dictionary<char, Node> Nodes { get; set; } = [];
     }
 }
