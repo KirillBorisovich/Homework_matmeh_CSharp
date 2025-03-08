@@ -17,9 +17,9 @@ public class Bor
     /// </summary>
     /// <param name="element">String to add.</param>
     /// <returns>Returns true if such a row does not exist yet.</returns>
-    public bool Add(byte[] element, int substringCode)
+    public bool Add(List<byte> element, int substringCode)
     {
-        if (element.Length == 0)
+        if (element.Count == 0)
         {
             return false;
         }
@@ -39,15 +39,15 @@ public class Bor
     /// </summary>
     /// <param name="element">String to check.</param>
     /// <returns>Returns true if such a string exists.</returns>
-    public int Contains(byte[] element)
+    public int Contains(List<byte> element)
     {
-        if (element.Length == 0)
+        if (element.Count == 0)
         {
             return -1;
         }
 
         var substringCode = -1;
-        var len = element.Length;
+        var len = element.Count;
         var node = this.root;
         for (var i = 0; i < len; i++)
         {
@@ -71,9 +71,9 @@ public class Bor
     /// </summary>
     /// <param name="element">String to remove.</param>
     /// <returns>Returns true if such a row existed.</returns>
-    public bool Remove(byte[] element)
+    public bool Remove(List<byte> element)
     {
-        if (element.Length == 0)
+        if (element.Count == 0)
         {
             return false;
         }
@@ -86,14 +86,14 @@ public class Bor
     /// </summary>
     /// <param name="prefix">Prefix to check.</param>
     /// <returns>Returns number of line thath start.</returns>
-    public int HowManyStartsWithPrefix(byte[] prefix)
+    public int HowManyStartsWithPrefix(List<byte> prefix)
     {
-        if (prefix.Length == 0)
+        if (prefix.Count == 0)
         {
             return 0;
         }
 
-        var len = prefix.Length;
+        var len = prefix.Count;
         var node = this.root;
         for (var i = 0; i < len; i++)
         {
@@ -108,20 +108,45 @@ public class Bor
         return node.NumberOfWordsAfterPrefix;
     }
 
-    private static bool RecursiveAddition(byte[] element, int substringCode, Node node, int index, ref bool missingLine)
+    /// <summary>
+    /// Find bytes by code.
+    /// </summary>
+    /// <param name="code">Code to search by.</param>
+    /// <returns>Byte sequence.</returns>
+    public byte[] FindBytesByCode(int code)
     {
-        if (index < element.Length && !node.Nodes.ContainsKey(element[index]))
+        List<byte> bytes = new();
+        if (FindBytesByCodeRecursively(this.root, code, bytes))
+        {
+            var len = bytes.Count;
+            var result = new byte[len];
+            for (var i = bytes.Count - 1; i >= 0; i--)
+            {
+                result[len - 1 - i] = bytes[i];
+            }
+
+            return result;
+        }
+        else
+        {
+            return new byte[0];
+        }
+    }
+
+    private static bool RecursiveAddition(List<byte> element, int substringCode, Node node, int index, ref bool missingLine)
+    {
+        if (index < element.Count && !node.Nodes.ContainsKey(element[index]))
         {
             missingLine = true;
             node.Nodes[element[index]] = new Node();
         }
-        else if (index == element.Length && node.EndOfWord == -1)
+        else if (index == element.Count && node.EndOfWord == -1)
         {
             node.EndOfWord = substringCode;
             missingLine = true;
         }
 
-        if (index < element.Length && RecursiveAddition(element, substringCode, node.Nodes[element[index]], index + 1, ref missingLine))
+        if (index < element.Count && RecursiveAddition(element, substringCode, node.Nodes[element[index]], index + 1, ref missingLine))
         {
             node.NumberOfWordsAfterPrefix++;
         }
@@ -129,20 +154,20 @@ public class Bor
         return missingLine;
     }
 
-    private static bool RecursiveRemove(byte[] element, Node node, int index)
+    private static bool RecursiveRemove(List<byte> element, Node node, int index)
     {
-        if (index == element.Length && node.EndOfWord == -1)
+        if (index == element.Count && node.EndOfWord == -1)
         {
             return false;
         }
-        else if (index == element.Length && node.EndOfWord != -1)
+        else if (index == element.Count && node.EndOfWord != -1)
         {
             node.EndOfWord = -1;
             return true;
         }
 
         var theResenceOfTheWord = false;
-        if (index < element.Length)
+        if (index < element.Count)
         {
             if (!node.Nodes.ContainsKey(element[index]))
             {
@@ -163,6 +188,28 @@ public class Bor
         }
 
         return theResenceOfTheWord;
+    }
+
+    private static bool FindBytesByCodeRecursively(Node node, int code, List<byte> bytes)
+    {
+        if (node.EndOfWord == code)
+        {
+            return true;
+        }
+
+        bool found = false;
+        var len = node.Nodes.Count;
+        foreach (var item in node.Nodes)
+        {
+            if (FindBytesByCodeRecursively(item.Value, code, bytes))
+            {
+                bytes.Add(item.Key);
+                found = true;
+                break;
+            }
+        }
+
+        return found;
     }
 
     private class Node
