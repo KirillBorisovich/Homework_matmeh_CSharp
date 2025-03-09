@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace LZW;
+﻿namespace LZW;
 
 /// <summary>
 /// Compression algorithm LZW.
@@ -13,7 +11,7 @@ public class LZWTransform
     /// <param name="path">Path to the file to be compressed</param>
     public static void Compress(string path)
     {
-        using (FileStream fstreamToRead = new FileStream(path, FileMode.OpenOrCreate))
+        using (FileStream fstreamToRead = new FileStream(path, FileMode.Open))
         {
             var buffer = new byte[fstreamToRead.Length];
             fstreamToRead.ReadExactly(buffer);
@@ -22,6 +20,21 @@ public class LZWTransform
             using (FileStream fstreamToWrite = File.Create(@"C:\\Users\\Kiril\\OneDrive\\Рабочий стол\test.txt"))
             {
                 fstreamToWrite.Write(compressedData, 0, compressedData.Length);
+            }
+        }
+    }
+
+    public static void Uncompress(string path)
+    {
+        using (FileStream fstreamToRead = new FileStream(path, FileMode.Open))
+        {
+            var buffer = new byte[fstreamToRead.Length];
+            fstreamToRead.ReadExactly(buffer);
+            var uncompressedData = DataUncompress(buffer);
+            Console.WriteLine($"{buffer.Length} , {uncompressedData.Length}");
+            using (FileStream fstreamToWrite = File.Create(@"C:\\Users\\Kiril\\OneDrive\\Рабочий стол\test2.txt"))
+            {
+                fstreamToWrite.Write(uncompressedData, 0, uncompressedData.Length);
             }
         }
     }
@@ -74,21 +87,59 @@ public class LZWTransform
         return result;
     }
 
-    private static byte DataUncompress(byte[] data)
+    private static byte[] DataUncompress(byte[] data)
     {
         Bor bor = new();
-        var len = data.Length;
-        List<byte> unсompressedString = new();
+        List<byte> uncompressedData = new();
 
-        for (var i = 0; i < len; i++)
+        for (var i = 0; i < data.Length; i++)
         {
             var temp = new List<byte> { (byte)i };
             bor.Add(temp, i);
         }
 
-        for (var i = 0; i < len; i++)
+        List<byte> chain = new();
+        byte old = 0;
+        var indexForByteCode = 0;
+        for (var i = 0; i < data.Length; i++)
         {
-            
+            var bytes = bor.FindBytesByCode(data[i]);
+            if (bytes.Length != 0)
+            {
+                foreach (var item in bytes)
+                {
+                    uncompressedData.Add(item);
+                    chain.Add(item);
+                }
+
+                bor.Add(chain, indexForByteCode);
+                indexForByteCode++;
+                old = data[i];
+            }
+            else
+            {
+                foreach (var item in bor.FindBytesByCode(old))
+                {
+                    chain.Add(item);
+                }
+
+                foreach (var item in chain)
+                {
+                    uncompressedData.Add(item);
+                }
+
+                bor.Add(chain, indexForByteCode);
+                indexForByteCode++;
+                old = data[i];
+            }
         }
+
+        var result = new byte[uncompressedData.Count];
+        for (var i = 0; i < uncompressedData.Count; i++)
+        {
+            result[i] = uncompressedData[i];
+        }
+
+        return result;
     }
 }
