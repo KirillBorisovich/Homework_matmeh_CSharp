@@ -15,11 +15,18 @@ public class LZWTransform
         {
             var buffer = new byte[fstreamToRead.Length];
             fstreamToRead.ReadExactly(buffer);
-            var compressedData = DataCompress(buffer);
-            Console.WriteLine($"Without BWT {(float)buffer.Length / (float)compressedData.Length}\n");
+
+            var compressedDataWithoutBWT = DataCompress(buffer, -1);
+
+            var bufferWithBWT = BWT.DirectTransformation(buffer);
+            var compressedDataWithBWT = DataCompress(bufferWithBWT.ResultString, bufferWithBWT.IndexLastElement);
+
+            Console.WriteLine($"Without BWT: {(float)buffer.Length / (float)compressedDataWithoutBWT.Length}\n");
+            Console.WriteLine($"With BWT: {(float)buffer.Length / (float)compressedDataWithBWT.Length}\n");
+
             using (FileStream fstreamToWrite = File.Create(@"C:\\Users\\Kiril\\OneDrive\\Рабочий стол\test.txt"))
             {
-                fstreamToWrite.Write(compressedData, 0, compressedData.Length);
+                fstreamToWrite.Write(compressedDataWithBWT, 0, compressedDataWithBWT.Length);
             }
         }
     }
@@ -34,7 +41,22 @@ public class LZWTransform
         {
             var buffer = new byte[fstreamToRead.Length];
             fstreamToRead.ReadExactly(buffer);
-            var uncompressedData = DataUncompress(buffer);
+
+            var indexBWT = new byte[4];
+            var j = 0;
+            for (var i = buffer.Length - 4; i < buffer.Length; i++)
+            {
+                indexBWT[j] = buffer[i];
+                j++;
+            }
+
+            var bufferToUncompress = new byte[buffer.Length - 4];
+            for (var i = 0; i < buffer.Length - 4; i++)
+            {
+                bufferToUncompress[i] = buffer[i];
+            }
+
+            var uncompressedData = DataUncompress(bufferToUncompress, BitConverter.ToInt32(indexBWT));
             using (FileStream fstreamToWrite = File.Create(@"C:\\Users\\Kiril\\OneDrive\\Рабочий стол\test2.txt"))
             {
                 fstreamToWrite.Write(uncompressedData, 0, uncompressedData.Length);
@@ -42,7 +64,7 @@ public class LZWTransform
         }
     }
 
-    private static byte[] DataCompress(byte[] data)
+    private static byte[] DataCompress(byte[] data, int indexBWT)
     {
         if (data == null || data.Length == 0)
         {
@@ -88,10 +110,10 @@ public class LZWTransform
 
         var bitSetList = TranslationFromListOfIntsToListOfBitsets(compressedString);
 
-        return TranslationFromAListOfBitSetsToAListOfBytes(bitSetList);
+        return TranslationFromAListOfBitSetsToAListOfBytes(bitSetList, indexBWT);
     }
 
-    private static byte[] DataUncompress(byte[] data)
+    private static byte[] DataUncompress(byte[] data, int indexBWT)
     {
         if (data == null || data.Length == 0)
         {
@@ -151,7 +173,7 @@ public class LZWTransform
             oldCode = currentCode;
         }
 
-        return uncompressedData.ToArray();
+        return BWT.InverseTransformation(uncompressedData.ToArray(), indexBWT);
     }
 
     private static List<bool[]> TranslationFromAListOfBytesToAListOfBitSets(byte[] byteArray)
@@ -210,7 +232,7 @@ public class LZWTransform
         return bitsList;
     }
 
-    private static byte[] TranslationFromAListOfBitSetsToAListOfBytes(List<bool[]> bitSetList)
+    private static byte[] TranslationFromAListOfBitSetsToAListOfBytes(List<bool[]> bitSetList, int indexBWT)
     {
         List<byte> byteList = new();
         bool[] byt1 = new bool[8];
@@ -234,6 +256,15 @@ public class LZWTransform
         if (bitIndex > 0)
         {
             byteList.Add(ConvertASetOfBitsToAByte(byt1));
+        }
+
+        if (indexBWT >= 0)
+        {
+            var indexBWTBytes = BitConverter.GetBytes(indexBWT);
+            foreach (var item in indexBWTBytes)
+            {
+                byteList.Add(item);
+            }
         }
 
         return byteList.ToArray();
