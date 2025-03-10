@@ -32,6 +32,7 @@ public class BorTests
     [Test]
     public void TestRemove()
     {
+        Assert.That(this._bor.Add(this.var0, 1), Is.EqualTo(true));
         Assert.That(this._bor.Add(this.var1, 1), Is.EqualTo(true));
         Assert.That(this._bor.Remove(this.var0), Is.EqualTo(true));
         Assert.That(this._bor.Remove(this.var0), Is.EqualTo(false));
