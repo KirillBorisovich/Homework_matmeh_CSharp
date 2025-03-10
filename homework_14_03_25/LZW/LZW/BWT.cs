@@ -10,16 +10,16 @@ public class BWT
     /// </summary>
     /// <param name="str">The string to be transformed.</param>
     /// <returns>Transformed string.</returns>
-    public static (string? ResultString, int IndexLastElement) DirectTransformation(string? str)
+    public static (byte[] ResultString, int IndexLastElement) DirectTransformation(byte[] str)
     {
-        if (string.IsNullOrEmpty(str))
+        if (str.Length == 0)
         {
-            return (null, 0);
+            return (Array.Empty<byte>(), 0);
         }
 
         var len = str.Length;
         var shiftIndices = new int[len];
-        var result = new char[len];
+        var result = new byte[len];
 
         for (var i = 0; i < len; i++)
         {
@@ -52,7 +52,7 @@ public class BWT
             }
         }
 
-        return (new string(result), lastIndex);
+        return (result, lastIndex);
     }
 
     /// <summary>
@@ -61,15 +61,15 @@ public class BWT
     /// <param name="str"> The string to be transformed. </param>
     /// <param name="lastIndex"> Position of the original row in the cyclic shift table. </param>
     /// <returns> Original line. </returns>
-    public static string? InverseTransformation(string? str, int lastIndex)
+    public static byte[] InverseTransformation(byte[] str, int lastIndex)
     {
-        if (string.IsNullOrEmpty(str) || lastIndex < 0)
+        if (str.Length == 0 || lastIndex < 0)
         {
-            return null;
+            return Array.Empty<byte>();
         }
 
         var len = str.Length;
-        var counter = new Dictionary<char, int>();
+        var counter = new Dictionary<byte, int>();
         var inverseTransformVector = new int[len];
 
         for (var i = 0; i < len; i++)
@@ -82,7 +82,7 @@ public class BWT
             counter[str[i]]++;
         }
 
-        var positions = new Dictionary<char, int>();
+        var positions = new Dictionary<byte, int>();
         int sum = 0;
         foreach (var kvp in counter.OrderBy(kvp => kvp.Key))
         {
@@ -96,7 +96,7 @@ public class BWT
             positions[str[i]]++;
         }
 
-        var result = new char[len];
+        var result = new byte[len];
         var j = inverseTransformVector[lastIndex];
         for (var i = 0; i < len; i++)
         {
@@ -104,6 +104,6 @@ public class BWT
             j = inverseTransformVector[j];
         }
 
-        return new string(result);
+        return result;
     }
 }

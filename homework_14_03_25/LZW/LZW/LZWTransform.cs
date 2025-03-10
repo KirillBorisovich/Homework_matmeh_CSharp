@@ -46,40 +46,39 @@ public class LZWTransform
     {
         if (data == null || data.Length == 0)
         {
-            return new byte[0];
+            return Array.Empty<byte>();
         }
 
-        Bor bor = new();
+        var bor = new Bor();
         InitializeTheBor(bor);
 
-        var len = data.Length;
-        List<int> compressedString = new();
+        var compressedString = new List<int>();
+        var chain = new List<byte>();
         var indexForByteCode = 256;
-        List<byte> chain = new();
 
-        for (var i = 0; i < len; i++)
+        foreach (byte currentByte in data)
         {
             if (bor.Size == 4095)
             {
-                bor = new();
+                bor = new Bor();
                 InitializeTheBor(bor);
                 indexForByteCode = 256;
             }
 
-            chain.Add(data[i]);
-            if (bor.Contains(chain) != -1)
+            chain.Add(currentByte);
+            var code = bor.Contains(chain);
+
+            if (code == -1)
             {
-                continue;
+                bor.Add(chain, indexForByteCode);
+                indexForByteCode++;
+
+                chain.RemoveAt(chain.Count - 1);
+                compressedString.Add(bor.Contains(chain));
+
+                chain.Clear();
+                chain.Add(currentByte);
             }
-
-            bor.Add(chain, indexForByteCode);
-            indexForByteCode++;
-
-            chain.RemoveAt(chain.Count - 1);
-            compressedString.Add(bor.Contains(chain));
-
-            chain.Clear();
-            chain.Add(data[i]);
         }
 
         if (chain.Count > 0)
@@ -87,7 +86,7 @@ public class LZWTransform
             compressedString.Add(bor.Contains(chain));
         }
 
-        List<bool[]> bitSetList = TranslationFromListOfIntsToListOfBitsets(compressedString);
+        var bitSetList = TranslationFromListOfIntsToListOfBitsets(compressedString);
 
         return TranslationFromAListOfBitSetsToAListOfBytes(bitSetList);
     }
@@ -96,72 +95,61 @@ public class LZWTransform
     {
         if (data == null || data.Length == 0)
         {
-            return new byte[0];
+            return Array.Empty<byte>();
         }
 
-        List<bool[]> bitSetList = TranslationFromAListOfBytesToAListOfBitSets(data);
+        var bitSetList = TranslationFromAListOfBytesToAListOfBitSets(data);
 
-        var intArray = TranslationFromListOfBitsetsToListOfInts(bitSetList).ToArray();
+        var intArray = TranslationFromListOfBitsetsToListOfInts(bitSetList);
 
-        Bor bor = new();
+        var bor = new Bor();
         InitializeTheBor(bor);
 
         List<byte> uncompressedData = new();
-        List<byte> chain = new();
-        int old = -1;
+        var oldCode = -1;
         var indexForByteCode = 256;
 
-        for (var i = 0; i < intArray.Length; i++)
+        foreach (int currentCode in intArray)
         {
             if (bor.Size == 4095)
             {
-                bor = new();
+                bor = new Bor();
                 InitializeTheBor(bor);
                 indexForByteCode = 256;
             }
 
-            var bytes = bor.FindBytesByCode(intArray[i]);
-            if (bytes.Length != 0)
+            var bytes = bor.FindBytesByCode(currentCode);
+
+            if (bytes.Length == 0)
             {
-                foreach (var item in bytes)
+                if (oldCode == -1)
                 {
-                    uncompressedData.Add(item);
+                    throw new InvalidOperationException("Invalid compressed data.");
                 }
 
-                if (old != -1)
-                {
-                    var newChain = new List<byte>(bor.FindBytesByCode(old));
-                    newChain.Add(bytes[0]);
-                    bor.Add(newChain, indexForByteCode);
-                    indexForByteCode++;
-                }
-
-                old = intArray[i];
-            }
-            else
-            {
-                var oldBytes = bor.FindBytesByCode(old);
+                var oldBytes = bor.FindBytesByCode(oldCode);
                 if (oldBytes.Length == 0)
                 {
                     throw new InvalidOperationException("Invalid compressed data.");
                 }
 
-                var newChain = new List<byte>(oldBytes);
-                newChain.Add(oldBytes[0]);
+                bytes = new byte[oldBytes.Length + 1];
+                Array.Copy(oldBytes, bytes, oldBytes.Length);
+                bytes[^1] = oldBytes[0];
+            }
 
+            uncompressedData.AddRange(bytes);
+
+            if (oldCode != -1)
+            {
+                var newChain = new List<byte>(bor.FindBytesByCode(oldCode));
+                newChain.Add(bytes[0]);
                 bor.Add(newChain, indexForByteCode);
                 indexForByteCode++;
-
-                foreach (var item in newChain)
-                {
-                    uncompressedData.Add(item);
-                }
-
-                old = intArray[i];
             }
-        }
 
-        Console.WriteLine(bor.Size);
+            oldCode = currentCode;
+        }
 
         return uncompressedData.ToArray();
     }
@@ -170,21 +158,19 @@ public class LZWTransform
     {
         List<bool[]> bitSetList = new();
         var bitSet = new bool[12];
-        var numberBit = 0;
-        for (var i = 0; i < byteArray.Length; i++)
-        {
-            var byt = ConvertByteToBoolArray(byteArray[i]);
-            Array.Reverse(byt);
-            foreach (var bit in byt)
-            {
-                bitSet[numberBit] = bit;
-                numberBit++;
+        var bitIndex = 0;
 
-                if (numberBit == 12)
+        foreach (byte b in byteArray)
+        {
+            for (int i = 7; i >= 0; i--)
+            {
+                bitSet[bitIndex++] = (b & (1 << i)) != 0;
+
+                if (bitIndex == 12)
                 {
-                    bitSetList.Add((bool[])bitSet.Clone());
-                    Array.Clear(bitSet, 0, bitSet.Length);
-                    numberBit = 0;
+                    bitSetList.Add(bitSet);
+                    bitSet = new bool[12];
+                    bitIndex = 0;
                 }
             }
         }
@@ -207,23 +193,17 @@ public class LZWTransform
     private static List<bool[]> TranslationFromListOfIntsToListOfBitsets(List<int> intList)
     {
         List<bool[]> bitsList = new();
-        var counter = 12;
-        for (var indexValue = 0; indexValue < intList.Count; indexValue++)
+        const int bitCount = 12;
+
+        foreach (var value in intList)
         {
-            var elementOfList = intList[indexValue];
-            var bitArray = new bool[counter];
+            bool[] bitArray = new bool[bitCount];
 
-            for (int i = counter - 1; i >= 0; i--)
+            for (int i = 0; i < bitCount; i++)
             {
-                if (bitArray.Length == 0 && (elementOfList & (1 << i)) == 0)
-                {
-                    continue;
-                }
-
-                bitArray[i] = (elementOfList & (1 << i)) != 0;
+                bitArray[bitCount - 1 - i] = (value & (1 << i)) != 0;
             }
 
-            Array.Reverse(bitArray);
             bitsList.Add(bitArray);
         }
 
@@ -233,35 +213,28 @@ public class LZWTransform
     private static byte[] TranslationFromAListOfBitSetsToAListOfBytes(List<bool[]> bitSetList)
     {
         List<byte> byteList = new();
-        var recordStartIndex = 0;
-        var byt1 = new bool[8];
+        bool[] byt1 = new bool[8];
+        int bitIndex = 0;
 
-        for (var intElementindex = 0; intElementindex < bitSetList.Count; intElementindex++)
+        foreach (var bitArray in bitSetList)
         {
-            var bitArray = bitSetList[intElementindex];
-            var numberBit = recordStartIndex;
-            for (var i = 0; i < bitArray.Length; i++)
+            foreach (var bit in bitArray)
             {
-                byt1[numberBit] = bitArray[i];
-                numberBit++;
+                byt1[bitIndex++] = bit;
 
-                if (numberBit == 8)
+                if (bitIndex == 8)
                 {
-                    numberBit = 0;
-                    recordStartIndex = 0;
-                    bool[] clonedByt = (bool[])byt1.Clone();
-                    byteList.Add(ConvertASetOfBitsToAByte(clonedByt));
-                    Array.Clear(byt1, 0, byt1.Length);
-                }
-
-                if (i == bitArray.Length - 1 && numberBit != 0)
-                {
-                    recordStartIndex = numberBit;
+                    byteList.Add(ConvertASetOfBitsToAByte(byt1));
+                    byt1 = new bool[8];
+                    bitIndex = 0;
                 }
             }
         }
 
-        byteList.Add(ConvertASetOfBitsToAByte(byt1));
+        if (bitIndex > 0)
+        {
+            byteList.Add(ConvertASetOfBitsToAByte(byt1));
+        }
 
         return byteList.ToArray();
     }
@@ -292,18 +265,6 @@ public class LZWTransform
         }
 
         return result;
-    }
-
-    private static bool[] ConvertByteToBoolArray(byte b)
-    {
-        bool[] bitArray = new bool[8];
-
-        for (int i = 0; i < 8; i++)
-        {
-            bitArray[i] = (b & (1 << i)) != 0;
-        }
-
-        return bitArray;
     }
 
     private static void InitializeTheBor(Bor bor)
