@@ -5,11 +5,18 @@
 /// </summary>
 public class LZWTransform
 {
+    private enum Events
+    {
+        Compress,
+        Uncompress,
+    }
+
     /// <summary>
     /// Create or overwrite a compressed file.
     /// </summary>
     /// <param name="path">Path to the file being compressed.</param>
-    public static void Compress(string path)
+    /// <returns>compression ratio without and with BWT.</returns>
+    public static (float WithoutBWT, float WithBWT) Compress(string path)
     {
         using (FileStream fstreamToRead = new FileStream(path, FileMode.Open))
         {
@@ -21,13 +28,15 @@ public class LZWTransform
             var bufferWithBWT = BWT.DirectTransformation(buffer);
             var compressedDataWithBWT = DataCompress(bufferWithBWT.ResultString, bufferWithBWT.IndexLastElement);
 
-            Console.WriteLine($"Without BWT: {(float)buffer.Length / (float)compressedDataWithoutBWT.Length}\n");
-            Console.WriteLine($"With BWT: {(float)buffer.Length / (float)compressedDataWithBWT.Length}\n");
-
-            using (FileStream fstreamToWrite = File.Create(@"C:\\Users\\Kiril\\OneDrive\\Рабочий стол\test.txt"))
+            var name = GetFileNameFromPath(path, Events.Compress);
+            string newPath = path + ".zipped";
+            using (FileStream fstreamToWrite = File.Create(newPath))
             {
                 fstreamToWrite.Write(compressedDataWithBWT, 0, compressedDataWithBWT.Length);
             }
+
+            return ((float)buffer.Length / (float)compressedDataWithoutBWT.Length,
+                (float)buffer.Length / (float)compressedDataWithBWT.Length);
         }
     }
 
@@ -56,8 +65,10 @@ public class LZWTransform
                 bufferToUncompress[i] = buffer[i];
             }
 
+            var newPath = path.TrimEnd(".zipped".ToArray());
+
             var uncompressedData = DataUncompress(bufferToUncompress, BitConverter.ToInt32(indexBWT));
-            using (FileStream fstreamToWrite = File.Create(@"C:\\Users\\Kiril\\OneDrive\\Рабочий стол\test2.txt"))
+            using (FileStream fstreamToWrite = File.Create(newPath))
             {
                 fstreamToWrite.Write(uncompressedData, 0, uncompressedData.Length);
             }
@@ -305,5 +316,24 @@ public class LZWTransform
             var temp = new List<byte> { (byte)i };
             bor.Add(temp, i);
         }
+    }
+
+    private static string GetFileNameFromPath(string path, Events even)
+    {
+        var i = path.Length - 1;
+        List<char> name = new();
+        while (!path[i].Equals('\\'))
+        {
+            name.Add(path[i]);
+            i--;
+        }
+
+        if (even == Events.Uncompress)
+        {
+            name.RemoveRange(0, 7);
+        }
+
+        name.Reverse();
+        return new string(name.ToArray());
     }
 }
