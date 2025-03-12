@@ -20,6 +20,7 @@ public class Bor
     /// Add a word to the structure.
     /// </summary>
     /// <param name="element">String to add.</param>
+    /// <param name="substringCode">Int substring code.</param>
     /// <returns>Returns true if such a row does not exist yet.</returns>
     public bool Add(List<byte> element, int substringCode)
     {
