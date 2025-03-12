@@ -18,6 +18,12 @@ if (!File.Exists(path))
 switch (keyEvents)
 {
     case "-c":
+        if (path.Substring(path.Length - 7) == ".zipped")
+        {
+            Console.WriteLine("The file is already compressed\n");
+            return -2;
+        }
+
         var coefficient = LZWTransform.Compress(path);
         Console.WriteLine($"Coefficient without BWT: {coefficient.WithoutBWT}\n");
         Console.WriteLine($"Coefficient with BWT: {coefficient.WithBWT}\n");
@@ -26,7 +32,7 @@ switch (keyEvents)
         if (path.Substring(path.Length - 7) != ".zipped")
         {
             Console.WriteLine("Incorrect extension for uncopression\n");
-            return -1;
+            return -3;
         }
 
         LZWTransform.Uncompress(path);
