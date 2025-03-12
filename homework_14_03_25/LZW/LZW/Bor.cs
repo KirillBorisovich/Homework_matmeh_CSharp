@@ -1,4 +1,8 @@
-﻿namespace LZW;
+﻿// <copyright file="Bor.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace LZW;
 
 /// <summary>
 /// Data structure for storing strings.

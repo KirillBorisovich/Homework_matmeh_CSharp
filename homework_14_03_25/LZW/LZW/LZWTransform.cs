@@ -1,4 +1,8 @@
-﻿namespace LZW;
+﻿// <copyright file="LZWTransform.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace LZW;
 
 /// <summary>
 /// Compression algorithm LZW.

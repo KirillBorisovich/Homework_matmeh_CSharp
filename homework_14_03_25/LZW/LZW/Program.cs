@@ -1,7 +1,13 @@
-﻿using LZW;
+﻿// <copyright file="Program.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+using LZW;
+
+Console.WriteLine("LZW\n");
 
 string path = args[0];
-string keyEvents = args[0];
+string keyEvents = args[1];
 
 if (!File.Exists(path))
 {
@@ -12,7 +18,9 @@ if (!File.Exists(path))
 switch (keyEvents)
 {
     case "-c":
-        LZWTransform.Compress(path);
+        var coefficient = LZWTransform.Compress(path);
+        Console.WriteLine($"Coefficient without BWT: {coefficient.WithoutBWT}\n");
+        Console.WriteLine($"Coefficient with BWT: {coefficient.WithBWT}\n");
         break;
     case "-u":
         if (path.Substring(path.Length - 7) != ".zipped")
@@ -22,9 +30,8 @@ switch (keyEvents)
         }
 
         LZWTransform.Uncompress(path);
+        Console.WriteLine("All good!\n");
         break;
 }
-
-Console.WriteLine("All good!\n");
 
 return 0;

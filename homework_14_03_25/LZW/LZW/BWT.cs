@@ -1,4 +1,8 @@
-﻿namespace LZW;
+﻿// <copyright file="BWT.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace LZW;
 
 /// <summary>
 /// Burroughs Wheeler Transformation Classroom.

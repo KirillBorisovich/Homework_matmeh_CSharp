@@ -4,12 +4,6 @@ namespace LZW.Tests;
 
 class LZWTests
 {
-    [SetUp]
-    public void Setup()
-    {
-
-    }
-
     [Test]
     public void TestCompressAndUncompress()
     {
@@ -41,5 +35,4 @@ class LZWTests
         File.Delete(@"..\..\..\testCompressOriginal.txt");
         File.Delete(@"..\..\..\testCompress.txt.zipped");
     }
-
 }

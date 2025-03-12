@@ -59,7 +59,7 @@ public class BorTests
     }
 
     [Test]
-    public void Test()
+    public void TestFindBytesByCode()
     {
         var var0Array = new byte[] { 1, 2 };
         var var1Array = new byte[] { 1, 2, 3 };
