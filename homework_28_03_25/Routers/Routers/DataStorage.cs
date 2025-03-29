@@ -14,9 +14,8 @@ public class DataStorage
     /// <returns>Returns a list of strings with configurations.</returns>
     public List<string> GenerateConfiguration()
     {
-
         var firstElement = this.configuration.ElementAt(0);
-        var maxConnetcionFirstElement = this.GetConnectionByMaxBandwidth(firstElement.Value);
+        var maxConnetcionFirstElement = GetConnectionByMaxBandwidth(firstElement.Value);
         Connection maxConnetcionFirstElementForAdding =
             new(maxConnetcionFirstElement.Name, maxConnetcionFirstElement.Bandwidth);
         this.AddConnection(
@@ -40,7 +39,7 @@ public class DataStorage
                 }
 
                 var maxValueByItemInConfiguration =
-                    this.GetConnectionByMaxBandwidth(this.configuration[item.Key]);
+                    GetConnectionByMaxBandwidth(this.configuration[item.Key]);
                 if ((maxValue.Bandwidth < maxValueByItemInConfiguration.Bandwidth) &&
                     !this.optimalConfiguration.ContainsKey(maxValueByItemInConfiguration.Name))
                 {
@@ -64,7 +63,47 @@ public class DataStorage
             this.AddConnection(this.optimalConfiguration, nameMaxElementString, maxValueForAdding);
         }
 
-        return this.TranslateConfigurationIntoStrings();
+        return TranslateConfigurationIntoStrings();
+
+        Connection GetConnectionByMaxBandwidth(List<Connection> connections)
+        {
+            var maxElement = connections[0];
+            foreach (var item in connections)
+            {
+                if (maxElement.Bandwidth < item.Bandwidth)
+                {
+                    maxElement = item;
+                }
+            }
+
+            return maxElement;
+        }
+
+        List<string> TranslateConfigurationIntoStrings()
+        {
+            List<string> result = new();
+
+            foreach (var router in this.optimalConfiguration)
+            {
+                if (router.Value.Count == 0)
+                {
+                    continue;
+                }
+
+                var addingString = $"{router.Key}: ";
+                foreach (var connection in router.Value)
+                {
+                    var tempString = $"{connection.Name} ({connection.Bandwidth}), ";
+                    addingString += tempString;
+                }
+
+                addingString = addingString.Remove(addingString.Length - 2, 1);
+
+                result.Add(addingString);
+            }
+
+            return result;
+        }
     }
 
     /// <summary>
@@ -95,46 +134,6 @@ public class DataStorage
         }
 
         routers[routerName].Add(connection);
-    }
-
-    private List<string> TranslateConfigurationIntoStrings()
-    {
-        List<string> result = new();
-
-        foreach (var router in this.optimalConfiguration)
-        {
-            if (router.Value.Count == 0)
-            {
-                continue;
-            }
-
-            var addingString = $"{router.Key}: ";
-            foreach (var connection in router.Value)
-            {
-                var tempString = $"{connection.Name} ({connection.Bandwidth}), ";
-                addingString += tempString;
-            }
-
-            addingString = addingString.Remove(addingString.Length - 2, 1);
-
-            result.Add(addingString);
-        }
-
-        return result;
-    }
-
-    private Connection GetConnectionByMaxBandwidth(List<Connection> connections)
-    {
-        var maxElement = connections[0];
-        foreach (var item in connections)
-        {
-            if (maxElement.Bandwidth < item.Bandwidth)
-            {
-                maxElement = item;
-            }
-        }
-
-        return maxElement;
     }
 
     private struct Connection(string name, int bandwidth)
