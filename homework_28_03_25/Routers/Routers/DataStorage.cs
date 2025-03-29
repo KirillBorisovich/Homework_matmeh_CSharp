@@ -1,8 +1,71 @@
 ﻿namespace Routers;
 
+/// <summary>
+/// Storing data about router connections.
+/// </summary>
 public class DataStorage
 {
-    private List<Router> routers = new();
+    private Dictionary<string, List<Connection>> configuration = new();
+    private Dictionary<string, List<Connection>> optimalConfiguration = new();
+
+    /// <summary>
+    /// Generate optimal configuration.
+    /// </summary>
+    /// <returns>Returns a list of strings with configurations.</returns>
+    public List<string> GenerateConfiguration()
+    {
+
+        var firstElement = this.configuration.ElementAt(0);
+        var maxConnetcionFirstElement = this.GetConnectionByMaxBandwidth(firstElement.Value);
+        Connection maxConnetcionFirstElementForAdding =
+            new(maxConnetcionFirstElement.Name, maxConnetcionFirstElement.Bandwidth);
+        this.AddConnection(
+            this.optimalConfiguration,
+            firstElement.Key,
+            maxConnetcionFirstElementForAdding);
+        firstElement.Value.Remove(maxConnetcionFirstElement);
+        var graphIsDisconnected = false;
+
+        while (this.optimalConfiguration.Count != this.configuration.Count && !graphIsDisconnected)
+        {
+            Connection maxValue = new("0", -1);
+
+            List<char> nameMaxElement = new();
+
+            foreach (var item in this.optimalConfiguration)
+            {
+                if (this.configuration[item.Key].Count == 0)
+                {
+                    continue;
+                }
+
+                var maxValueByItemInConfiguration =
+                    this.GetConnectionByMaxBandwidth(this.configuration[item.Key]);
+                if ((maxValue.Bandwidth < maxValueByItemInConfiguration.Bandwidth) &&
+                    !this.optimalConfiguration.ContainsKey(maxValueByItemInConfiguration.Name))
+                {
+                    maxValue = maxValueByItemInConfiguration;
+                    nameMaxElement = [.. item.Key];
+                }
+            }
+
+            if (maxValue.Bandwidth == -1)
+            {
+                //throw an exception here
+                graphIsDisconnected = true;
+                continue;
+            }
+
+            var nameMaxElementString = new string(nameMaxElement.ToArray());
+            Connection maxValueForAdding = new(maxValue.Name, maxValue.Bandwidth);
+
+            this.configuration[nameMaxElementString].Remove(maxValue);
+
+            this.AddConnection(this.optimalConfiguration, nameMaxElementString, maxValueForAdding);
+        }
+
+        return this.TranslateConfigurationIntoStrings();
+    }
 
     /// <summary>
     /// Add connection.
@@ -10,48 +73,71 @@ public class DataStorage
     /// <param name="routerName">The name of the router we are routing from.</param>
     /// <param name="connectionWith">The name of the router we are heading to.</param>
     /// <param name="bandwidth">Connection bandwidth.</param>
-    public void AddConnection(string routerName, string connectionWith, string bandwidth)
+    public void AddConnectionFromFile(string routerName, string connectionWith, int bandwidth)
     {
         var connection = new Connection(connectionWith, bandwidth);
-
-        var router = this.PresenceOfARouter(routerName);
-        if (router.Name != "None")
-        {
-            router.Connections.Add(connection);
-            return;
-        }
-
-        router = new Router(routerName);
-        router.Connections.Add(connection);
-        this.routers.Add(router);
+        this.AddConnection(this.configuration, routerName, connection);
     }
 
-    private Router PresenceOfARouter(string name)
+    private void AddConnection(
+        Dictionary<string, List<Connection>> routers,
+        string routerName,
+        Connection connection)
     {
-        foreach (var item in this.routers)
+        if (!routers.ContainsKey(routerName))
         {
-            if (item.Name == name)
+            routers.Add(routerName, new List<Connection>());
+        }
+
+        if (!routers.ContainsKey(connection.Name))
+        {
+            routers.Add(connection.Name, new List<Connection>());
+        }
+
+        routers[routerName].Add(connection);
+    }
+
+    private List<string> TranslateConfigurationIntoStrings()
+    {
+        List<string> result = new();
+
+        foreach (var router in this.optimalConfiguration)
+        {
+            if (router.Value.Count == 0)
             {
-                return item;
+                continue;
+            }
+
+            var addingString = $"{router.Key}: ";
+            foreach (var connection in router.Value)
+            {
+                var tempString = $"{connection.Name} ({connection.Bandwidth}), ";
+                addingString += tempString;
+            }
+
+            addingString = addingString.Remove(addingString.Length - 2, 1);
+
+            result.Add(addingString);
+        }
+
+        return result;
+    }
+
+    private Connection GetConnectionByMaxBandwidth(List<Connection> connections)
+    {
+        var maxElement = connections[0];
+        foreach (var item in connections)
+        {
+            if (maxElement.Bandwidth < item.Bandwidth)
+            {
+                maxElement = item;
             }
         }
 
-        return new Router("None");
+        return maxElement;
     }
 
-    private struct Router(string name)
-    {
-        public string Name { get; } = name;
-
-        public List<Connection> Connections { get; } = new();
-    }
-
-    /// <summary>
-    /// A structure that stores information about a connection to another router.
-    /// </summary>
-    /// <param name="name">Router name.</param>
-    /// <param name="bandwidth">Router bandwidth</param>
-    private struct Connection(string name, string bandwidth)
+    private struct Connection(string name, int bandwidth)
     {
         /// <summary>
         /// Gets router name.
@@ -61,6 +147,6 @@ public class DataStorage
         /// <summary>
         /// Gets router bandwidth.
         /// </summary>
-        public string Bandwidth { get; } = bandwidth;
+        public int Bandwidth { get; } = bandwidth;
     }
 }
