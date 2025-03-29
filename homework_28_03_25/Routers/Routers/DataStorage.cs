@@ -14,6 +14,11 @@ public class DataStorage
     /// <returns>Returns a list of strings with configurations.</returns>
     public List<string> GenerateConfiguration()
     {
+        if (this.configuration.Count == 0)
+        {
+            throw new ConfigurationIsEmptyExpection();
+        }
+
         var firstElement = this.configuration.ElementAt(0);
         var maxConnetcionFirstElement = GetConnectionByMaxBandwidth(firstElement.Value);
         Connection maxConnetcionFirstElementForAdding =
@@ -23,9 +28,8 @@ public class DataStorage
             firstElement.Key,
             maxConnetcionFirstElementForAdding);
         firstElement.Value.Remove(maxConnetcionFirstElement);
-        var graphIsDisconnected = false;
 
-        while (this.optimalConfiguration.Count != this.configuration.Count && !graphIsDisconnected)
+        while (this.optimalConfiguration.Count != this.configuration.Count)
         {
             Connection maxValue = new("0", -1);
 
@@ -50,9 +54,7 @@ public class DataStorage
 
             if (maxValue.Bandwidth == -1)
             {
-                //throw an exception here
-                graphIsDisconnected = true;
-                continue;
+                throw new DisconnectedGraphException();
             }
 
             var nameMaxElementString = new string(nameMaxElement.ToArray());
@@ -67,6 +69,11 @@ public class DataStorage
 
         Connection GetConnectionByMaxBandwidth(List<Connection> connections)
         {
+            if (connections.Count == 0)
+            {
+                return new Connection("-1", -1);
+            }
+
             var maxElement = connections[0];
             foreach (var item in connections)
             {
@@ -114,6 +121,13 @@ public class DataStorage
     /// <param name="bandwidth">Connection bandwidth.</param>
     public void AddConnectionFromFile(string routerName, string connectionWith, int bandwidth)
     {
+        if (string.IsNullOrEmpty(routerName) ||
+            string.IsNullOrEmpty(routerName) ||
+            string.IsNullOrEmpty(routerName))
+        {
+            return;
+        }
+
         var connection = new Connection(connectionWith, bandwidth);
         this.AddConnection(this.configuration, routerName, connection);
     }
@@ -123,6 +137,11 @@ public class DataStorage
         string routerName,
         Connection connection)
     {
+        if (string.IsNullOrEmpty(routerName))
+        {
+            return;
+        }
+
         if (!routers.ContainsKey(routerName))
         {
             routers.Add(routerName, new List<Connection>());

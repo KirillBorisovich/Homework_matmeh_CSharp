@@ -74,10 +74,12 @@ public class ConfigurationFile
     /// <param name="data">Data warehouse.</param>
     public static void Write(string path, List<string> data)
     {
-        using StreamWriter writer = new StreamWriter(path);
-        foreach (var item in data)
+        using (StreamWriter writer = new StreamWriter(path))
         {
-            writer.WriteLine(item);
+            foreach (var item in data)
+            {
+                writer.WriteLine(item);
+            }
         }
     }
 }
