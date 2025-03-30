@@ -44,7 +44,8 @@ public class DataStorage
 
                 var maxValueByItemInConfiguration =
                     GetConnectionByMaxBandwidth(this.configuration[item.Key]);
-                while (this.optimalConfiguration.ContainsKey(maxValueByItemInConfiguration.Name))
+                while (this.optimalConfiguration.ContainsKey(maxValueByItemInConfiguration.Name) &&
+                    maxValueByItemInConfiguration.Bandwidth != -1)
                 {
                     this.configuration[item.Key].Remove(maxValueByItemInConfiguration);
                     maxValueByItemInConfiguration = GetConnectionByMaxBandwidth(this.configuration[item.Key]);
