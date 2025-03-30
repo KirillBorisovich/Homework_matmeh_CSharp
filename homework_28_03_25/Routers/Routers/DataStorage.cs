@@ -23,7 +23,7 @@ public class DataStorage
         var maxConnetcionFirstElement = GetConnectionByMaxBandwidth(firstElement.Value);
         Connection maxConnetcionFirstElementForAdding =
             new(maxConnetcionFirstElement.Name, maxConnetcionFirstElement.Bandwidth);
-        this.AddConnection(
+        AddConnection(
             this.optimalConfiguration,
             firstElement.Key,
             maxConnetcionFirstElementForAdding);
@@ -62,7 +62,7 @@ public class DataStorage
 
             this.configuration[nameMaxElementString].Remove(maxValue);
 
-            this.AddConnection(this.optimalConfiguration, nameMaxElementString, maxValueForAdding);
+            AddConnection(this.optimalConfiguration, nameMaxElementString, maxValueForAdding);
         }
 
         return TranslateConfigurationIntoStrings();
@@ -104,7 +104,7 @@ public class DataStorage
                     addingString += tempString;
                 }
 
-                addingString = addingString.Remove(addingString.Length - 2, 1);
+                addingString = addingString.Remove(addingString.Length - 2, 2);
 
                 result.Add(addingString);
             }
@@ -129,10 +129,10 @@ public class DataStorage
         }
 
         var connection = new Connection(connectionWith, bandwidth);
-        this.AddConnection(this.configuration, routerName, connection);
+        AddConnection(this.configuration, routerName, connection);
     }
 
-    private void AddConnection(
+    private static void AddConnection(
         Dictionary<string, List<Connection>> routers,
         string routerName,
         Connection connection)
