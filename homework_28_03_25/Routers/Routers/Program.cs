@@ -40,3 +40,4 @@ catch (DisconnectedGraphException)
 Console.WriteLine("The program completed successfully.\n");
 
 return 0;
+
