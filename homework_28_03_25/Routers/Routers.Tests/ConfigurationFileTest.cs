@@ -6,11 +6,11 @@ class ConfigurationFileTest
     public void ReadAndWriteTest()
     {
         DataStorage testData = new();
-        ConfigurationFile.Read("..\\..\\..\\inputTestFile.txt", testData);
-        ConfigurationFile.Write("..\\..\\..\\OutputTestFile.txt", 
+        ConfigurationFile.Read("../../../inputTestFile.txt", testData);
+        ConfigurationFile.Write("../../../OutputTestFile.txt", 
             testData.GenerateConfiguration());
-        byte[] expected = File.ReadAllBytes("..\\..\\..\\sampleFileForOutput.txt");
-        byte[] actual = File.ReadAllBytes("..\\..\\..\\OutputTestFile.txt");
+        byte[] expected = File.ReadAllBytes("../../../sampleFileForOutput.txt");
+        byte[] actual = File.ReadAllBytes("../../../OutputTestFile.txt");
 
         Assert.That(expected, Is.EqualTo(actual));
     }
@@ -21,7 +21,7 @@ class ConfigurationFileTest
         DataStorage testData = new();
         Assert.Throws<FormatException>(
             () => ConfigurationFile.Read(
-                "..\\..\\..\\invalidInputFile.txt",
+                "../../../invalidInputFile.txt",
                 testData));
     }
 }

@@ -15,7 +15,7 @@
         public void GenerateConfigurationShouldReturnDisconnectedGraphExceptionTest()
         {
             ConfigurationFile.Read(
-                "..\\..\\..\\disconnectedGraphInputFile.txt", 
+                "../../../disconnectedGraphInputFile.txt", 
                 this.data);
 
             Assert.Throws<DisconnectedGraphException>(
