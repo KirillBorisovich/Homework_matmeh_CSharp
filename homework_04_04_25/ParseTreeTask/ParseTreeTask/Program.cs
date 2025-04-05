@@ -1,2 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using ParseTreeTask;
+
+Calc exp = new("(* (+ 1 1) 2)");
+Console.WriteLine(exp.CalculateExpression());
