@@ -14,7 +14,7 @@ public class Calc(string inputString) : ParseTree(inputString)
     /// <exception cref="InvalidCharacterException">Invalid characters in expression.</exception>
     public int CalculateExpression()
     {
-        return CalculateExpressionRecursively(this.root);
+        return CalculateExpressionRecursively(this.Root);
 
         int CalculateExpressionRecursively(Node node)
         {

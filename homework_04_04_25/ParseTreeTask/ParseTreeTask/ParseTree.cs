@@ -6,11 +6,6 @@
 public class ParseTree
 {
     /// <summary>
-    /// Root of the tree.
-    /// </summary>
-    protected Node root;
-
-    /// <summary>
     /// Initializes a new instance of the <see cref="ParseTree"/> class.
     /// Initialize the tree.
     /// </summary>
@@ -18,7 +13,7 @@ public class ParseTree
     public ParseTree(string inputString)
     {
         var index = 0;
-        this.root = SplitArithmeticExpression(inputString, ref index);
+        this.Root = SplitArithmeticExpression(inputString, ref index);
 
         Node SplitArithmeticExpression(string str, ref int index)
         {
@@ -29,6 +24,11 @@ public class ParseTree
 
             while (str[index] == '(' || str[index] == ')' || str[index] == ' ')
             {
+                if (index == str.Length - 1)
+                {
+                    break;
+                }
+
                 index++;
             }
 
@@ -38,6 +38,11 @@ public class ParseTree
             const byte upperValueASKII = 57;
             while (str[index] >= lowerValueASKII && str[index] <= upperValueASKII)
             {
+                if (index == str.Length - 1)
+                {
+                    break;
+                }
+
                 number.Add(str[index]);
                 index++;
             }
@@ -46,8 +51,8 @@ public class ParseTree
             {
                 return new Node(new string(number.ToArray()));
             }
-            else if (str[index] == '*' || str[index] == '-' ||
-                str[index] == '+' || str[index] == '/')
+            else if (index < str.Length && (str[index] == '*' || str[index] == '-' ||
+                str[index] == '+' || str[index] == '/'))
             {
                 number.Add(str[index]);
                 Node node = new(new string(number.ToArray()));
@@ -64,15 +69,20 @@ public class ParseTree
     }
 
     /// <summary>
+    /// Gets root of the tree.
+    /// </summary>
+    protected Node Root { get; }
+
+    /// <summary>
     /// Print tree.
     /// </summary>
     public void PrintTree()
     {
-        RecursivelyPrintTree(this.root);
+        RecursivelyPrintTree(this.Root);
 
         void RecursivelyPrintTree(Node node)
         {
-            Console.WriteLine($"{node.Value} ");
+            Console.Write($"{node.Value} ");
             if (node.LeftChild != null)
             {
                 RecursivelyPrintTree(node.LeftChild);
