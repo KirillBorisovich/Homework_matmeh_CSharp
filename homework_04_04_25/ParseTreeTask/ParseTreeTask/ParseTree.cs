@@ -38,12 +38,12 @@ public class ParseTree
             const byte upperValueASKII = 57;
             while (str[index] >= lowerValueASKII && str[index] <= upperValueASKII)
             {
+                number.Add(str[index]);
                 if (index == str.Length - 1)
                 {
                     break;
                 }
 
-                number.Add(str[index]);
                 index++;
             }
 
