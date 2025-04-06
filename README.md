@@ -15,4 +15,4 @@
 
 ### [Задание 5: Роутеры](https://github.com/KirillBorisovich/Homework_matmeh_CSharp/tree/Routers)
 
-### [Задание 6: Депево разбора](https://github.com/KirillBorisovich/Homework_matmeh_C/tree/parseTree/homework_20_11_24/parseTree)
+### [Задание 6: Дерево разбора](https://github.com/KirillBorisovich/Homework_matmeh_C/tree/parseTree/homework_20_11_24/parseTree)
