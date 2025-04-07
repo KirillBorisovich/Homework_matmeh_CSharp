@@ -16,3 +16,5 @@
 ### [Задание 5: Роутеры](https://github.com/KirillBorisovich/Homework_matmeh_CSharp/tree/Routers)
 
 ### [Задание 6: Дерево разбора](https://github.com/KirillBorisovich/Homework_matmeh_C/tree/parseTree/homework_20_11_24/parseTree)
+
+### [Задание 7: Лямбда функции](https://github.com/KirillBorisovich/Homework_matmeh_CSharp/tree/LambdaFunctions/homework_11_04_25/MapFilterFold)
