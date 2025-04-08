@@ -17,7 +17,6 @@ jobs:
 
   build-windows:
     runs-on: windows-latest
-
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-dotnet@v4
@@ -25,9 +24,7 @@ jobs:
         dotnet-version: '9.x'
 
     - name: Build
-      shell: cmd
-      run: For /R %%I in (*.sln) do (dotnet test %%I if ERRORLEVEL 1 EXIT /B 1)
+      run: Get-ChildItem -Recurse -Filter *.sln | ForEach-Object { dotnet build $_.FullName --configuration Release }
 
     - name: Run tests
-      shell: cmd
-      run: For /R %%I in (*.sln) do (dotnet test %%I if ERRORLEVEL 1 EXIT /B 1)
+      run: Get-ChildItem -Recurse -Filter *.sln | ForEach-Object { dotnet test $_.FullName --no-build --configuration Release } 
