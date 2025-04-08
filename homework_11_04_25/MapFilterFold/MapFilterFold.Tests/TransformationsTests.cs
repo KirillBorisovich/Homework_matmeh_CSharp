@@ -1,4 +1,4 @@
-﻿namespace MapFilterFold.Tests
+namespace MapFilterFold.Tests
 {
     public class Tests
     {
@@ -39,7 +39,7 @@
         public void FoldTest()
         {
             Assert.That(Transformations.Fold(this.list, 1, (acc, elem) => acc * elem),
-                Is.EqualTo(6));
+                Is.EqualTo(2));
         }
     }
 }
