@@ -26,8 +26,8 @@ jobs:
 
     - name: Build
       shell: cmd
-      run: For /R %%I in (*.sln) do (dotnet test %%I if ERRORLEVEL 1 EXIT /B 1)
+      run: For /R %%I in (*.sln) do (dotnet test %%I if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%)
 
     - name: Run tests
       shell: cmd
-      run: For /R %%I in (*.sln) do (dotnet test %%I if ERRORLEVEL 1 EXIT /B 1)
+      run: For /R %%I in (*.sln) do (dotnet test %%I if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%)
