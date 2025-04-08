@@ -13,12 +13,14 @@ public class Transformations
     /// <returns>Transformed list.</returns>
     public static List<int> Map(List<int> list, Func<int, int> function)
     {
+        List<int> result = new(list);
+
         for (var i = 0; i < list.Count; i++)
         {
-            list[i] = function(list[i]);
+            result[i] = function(result[i]);
         }
 
-        return list;
+        return result;
     }
 
     /// <summary>
@@ -29,15 +31,9 @@ public class Transformations
     /// <returns>Filtered array.</returns>
     public static List<int> Filter(List<int> list, Func<int, bool> function)
     {
-        for (var i = 0; i < list.Count; i++)
-        {
-            if (!function(list[i]))
-            {
-                list.Remove(list[i]);
-            }
-        }
-
-        return list;
+        List<int> result = new(list);
+        result.RemoveAll(x => !function(x));
+        return result;
     }
 
     /// <summary>
