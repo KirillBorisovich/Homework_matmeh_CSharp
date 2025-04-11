@@ -31,8 +31,15 @@ public class Transformations
     /// <returns>Filtered array.</returns>
     public static List<int> Filter(List<int> list, Func<int, bool> function)
     {
-        List<int> result = new(list);
-        result.RemoveAll(x => !function(x));
+        List<int> result = new();
+        foreach (var item in list)
+        {
+            if (function(item))
+            {
+                result.Add(item);
+            }
+        }
+
         return result;
     }
 
