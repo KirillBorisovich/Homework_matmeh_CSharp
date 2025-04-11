@@ -1,4 +1,4 @@
-﻿namespace MapFilterFold.Tests
+namespace MapFilterFold.Tests
 {
     public class Tests
     {
