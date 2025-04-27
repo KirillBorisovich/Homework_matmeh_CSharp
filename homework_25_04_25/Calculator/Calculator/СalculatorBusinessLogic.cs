@@ -2,21 +2,31 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
+using System.ComponentModel;
+
 namespace Calculator;
 
 /// <summary>
 /// Сalculator business logic.
 /// </summary>
-public class СalculatorBusinessLogic
+public class СalculatorBusinessLogic : INotifyPropertyChanged
 {
     private double previousValue = 0;
     private string operation = string.Empty;
     private bool isNewOperation = true;
+    private double currentValue = 0;
 
-    /// <summary>
-    /// Gets current value.
-    /// </summary>
-    public double CurrentValue { get; private set; } = 0;
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    public double CurrentValue
+    {
+        get => this.currentValue;
+        private set
+        {
+            this.currentValue = value;
+            this.OnPropertyChanged(nameof(this.CurrentValue));
+        }
+    }
 
     /// <summary>
     /// Clear values.
@@ -42,7 +52,7 @@ public class СalculatorBusinessLogic
             return;
         }
 
-        this.CurrentValue = (this.CurrentValue * 10) + int.Parse(value);
+        this.CurrentValue = (this.currentValue * 10) + double.Parse(value);
     }
 
     /// <summary>
@@ -57,7 +67,7 @@ public class СalculatorBusinessLogic
         }
         else
         {
-            this.previousValue = this.CurrentValue;
+            this.previousValue = this.currentValue;
         }
 
         this.operation = inputOperation;
@@ -79,26 +89,31 @@ public class СalculatorBusinessLogic
         switch (this.operation)
         {
             case "/":
-                if (this.CurrentValue == 0)
+                if (this.currentValue == 0)
                 {
                     throw new DivideByZeroException();
                 }
 
-                this.CurrentValue = this.previousValue / this.CurrentValue;
+                this.CurrentValue = this.previousValue / this.currentValue;
                 break;
             case "*":
-                this.CurrentValue = this.previousValue * this.CurrentValue;
+                this.CurrentValue = this.previousValue * this.currentValue;
                 break;
             case "-":
-                this.CurrentValue = this.previousValue - this.CurrentValue;
+                this.CurrentValue = this.previousValue - this.currentValue;
                 break;
             case "+":
-                this.CurrentValue = this.previousValue + this.CurrentValue;
+                this.CurrentValue = this.previousValue + this.currentValue;
                 break;
             default:
                 throw new UnknownOperationException();
         }
 
         this.isNewOperation = true;
+    }
+
+    protected virtual void OnPropertyChanged(string propertyName)
+    {
+        this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

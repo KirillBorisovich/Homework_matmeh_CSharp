@@ -30,6 +30,7 @@
         {
             tableLayoutPanel1 = new TableLayoutPanel();
             tableLayoutPanel2 = new TableLayoutPanel();
+            Equality = new Button();
             Addition = new Button();
             Number0 = new Button();
             Clear = new Button();
@@ -46,7 +47,6 @@
             Number2 = new Button();
             Number1 = new Button();
             Output = new TextBox();
-            Equality = new Button();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
@@ -100,6 +100,17 @@
             tableLayoutPanel2.Size = new Size(278, 247);
             tableLayoutPanel2.TabIndex = 2;
             // 
+            // Equality
+            // 
+            Equality.Dock = DockStyle.Fill;
+            Equality.Font = new Font("Segoe UI", 14F);
+            Equality.Location = new Point(141, 186);
+            Equality.Name = "Equality";
+            Equality.Size = new Size(63, 58);
+            Equality.TabIndex = 14;
+            Equality.Text = "=";
+            Equality.UseVisualStyleBackColor = true;
+            // 
             // Addition
             // 
             Addition.Dock = DockStyle.Fill;
@@ -121,7 +132,6 @@
             Number0.TabIndex = 13;
             Number0.Text = "0";
             Number0.UseVisualStyleBackColor = true;
-            Number0.Click += button2_Click_1;
             // 
             // Clear
             // 
@@ -230,7 +240,7 @@
             Division.Name = "Division";
             Division.Size = new Size(65, 55);
             Division.TabIndex = 3;
-            Division.Text = "\\";
+            Division.Text = "/";
             Division.UseVisualStyleBackColor = true;
             // 
             // Number3
@@ -277,17 +287,6 @@
             Output.TabIndex = 3;
             Output.Text = "0";
             Output.TextAlign = HorizontalAlignment.Right;
-            // 
-            // Equality
-            // 
-            Equality.Dock = DockStyle.Fill;
-            Equality.Font = new Font("Segoe UI", 14F);
-            Equality.Location = new Point(141, 186);
-            Equality.Name = "Equality";
-            Equality.Size = new Size(63, 58);
-            Equality.TabIndex = 16;
-            Equality.Text = "=";
-            Equality.UseVisualStyleBackColor = true;
             // 
             // CalculatorUI
             // 
