@@ -17,14 +17,19 @@ jobs:
 
   build-windows:
     runs-on: windows-latest
+
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '9.x'
 
-    - name: Build
-      run: Get-ChildItem -Recurse -Filter *.sln | ForEach-Object { dotnet build $_.FullName --configuration Release }
-
-    - name: Run tests
-      run: Get-ChildItem -Recurse -Filter *.sln | ForEach-Object { dotnet test $_.FullName --no-build --configuration Release } 
+    - name: Build and Test
+      shell: pwsh
+      run: |
+        Get-ChildItem -Recurse -Filter *.sln | ForEach-Object {
+          dotnet build $_.FullName
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          dotnet test $_.FullName --no-build
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        }
