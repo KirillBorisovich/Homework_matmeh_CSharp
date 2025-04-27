@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            tableLayoutPanel1 = new TableLayoutPanel();
-            tableLayoutPanel2 = new TableLayoutPanel();
+            Main = new TableLayoutPanel();
+            ControlButtons = new TableLayoutPanel();
             Equality = new Button();
             Addition = new Button();
             Number0 = new Button();
@@ -47,58 +47,58 @@
             Number2 = new Button();
             Number1 = new Button();
             Output = new TextBox();
-            tableLayoutPanel1.SuspendLayout();
-            tableLayoutPanel2.SuspendLayout();
+            Main.SuspendLayout();
+            ControlButtons.SuspendLayout();
             SuspendLayout();
             // 
-            // tableLayoutPanel1
+            // Main
             // 
-            tableLayoutPanel1.ColumnCount = 1;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 0, 1);
-            tableLayoutPanel1.Controls.Add(Output, 0, 0);
-            tableLayoutPanel1.Dock = DockStyle.Fill;
-            tableLayoutPanel1.Location = new Point(0, 0);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 2;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 70F));
-            tableLayoutPanel1.Size = new Size(284, 361);
-            tableLayoutPanel1.TabIndex = 0;
+            Main.ColumnCount = 1;
+            Main.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            Main.Controls.Add(ControlButtons, 0, 1);
+            Main.Controls.Add(Output, 0, 0);
+            Main.Dock = DockStyle.Fill;
+            Main.Location = new Point(0, 0);
+            Main.Name = "Main";
+            Main.RowCount = 2;
+            Main.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));
+            Main.RowStyles.Add(new RowStyle(SizeType.Percent, 70F));
+            Main.Size = new Size(284, 361);
+            Main.TabIndex = 0;
             // 
-            // tableLayoutPanel2
+            // ControlButtons
             // 
-            tableLayoutPanel2.ColumnCount = 4;
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableLayoutPanel2.Controls.Add(Equality, 2, 3);
-            tableLayoutPanel2.Controls.Add(Addition, 3, 3);
-            tableLayoutPanel2.Controls.Add(Number0, 1, 3);
-            tableLayoutPanel2.Controls.Add(Clear, 0, 3);
-            tableLayoutPanel2.Controls.Add(Difference, 3, 2);
-            tableLayoutPanel2.Controls.Add(Number9, 2, 2);
-            tableLayoutPanel2.Controls.Add(Number8, 1, 2);
-            tableLayoutPanel2.Controls.Add(Number7, 0, 2);
-            tableLayoutPanel2.Controls.Add(Multiplication, 3, 1);
-            tableLayoutPanel2.Controls.Add(Number6, 2, 1);
-            tableLayoutPanel2.Controls.Add(Number5, 1, 1);
-            tableLayoutPanel2.Controls.Add(Number4, 0, 1);
-            tableLayoutPanel2.Controls.Add(Division, 3, 0);
-            tableLayoutPanel2.Controls.Add(Number3, 2, 0);
-            tableLayoutPanel2.Controls.Add(Number2, 1, 0);
-            tableLayoutPanel2.Controls.Add(Number1, 0, 0);
-            tableLayoutPanel2.Dock = DockStyle.Fill;
-            tableLayoutPanel2.Location = new Point(3, 111);
-            tableLayoutPanel2.Name = "tableLayoutPanel2";
-            tableLayoutPanel2.RowCount = 4;
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            tableLayoutPanel2.Size = new Size(278, 247);
-            tableLayoutPanel2.TabIndex = 2;
+            ControlButtons.ColumnCount = 4;
+            ControlButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            ControlButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            ControlButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            ControlButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            ControlButtons.Controls.Add(Equality, 2, 3);
+            ControlButtons.Controls.Add(Addition, 3, 3);
+            ControlButtons.Controls.Add(Number0, 1, 3);
+            ControlButtons.Controls.Add(Clear, 0, 3);
+            ControlButtons.Controls.Add(Difference, 3, 2);
+            ControlButtons.Controls.Add(Number9, 2, 2);
+            ControlButtons.Controls.Add(Number8, 1, 2);
+            ControlButtons.Controls.Add(Number7, 0, 2);
+            ControlButtons.Controls.Add(Multiplication, 3, 1);
+            ControlButtons.Controls.Add(Number6, 2, 1);
+            ControlButtons.Controls.Add(Number5, 1, 1);
+            ControlButtons.Controls.Add(Number4, 0, 1);
+            ControlButtons.Controls.Add(Division, 3, 0);
+            ControlButtons.Controls.Add(Number3, 2, 0);
+            ControlButtons.Controls.Add(Number2, 1, 0);
+            ControlButtons.Controls.Add(Number1, 0, 0);
+            ControlButtons.Dock = DockStyle.Fill;
+            ControlButtons.Location = new Point(3, 111);
+            ControlButtons.Name = "ControlButtons";
+            ControlButtons.RowCount = 4;
+            ControlButtons.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            ControlButtons.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            ControlButtons.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            ControlButtons.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            ControlButtons.Size = new Size(278, 247);
+            ControlButtons.TabIndex = 2;
             // 
             // Equality
             // 
@@ -293,20 +293,20 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(284, 361);
-            Controls.Add(tableLayoutPanel1);
+            Controls.Add(Main);
             MinimumSize = new Size(300, 400);
             Name = "CalculatorUI";
             Text = "CalculatorUI";
-            tableLayoutPanel1.ResumeLayout(false);
-            tableLayoutPanel1.PerformLayout();
-            tableLayoutPanel2.ResumeLayout(false);
+            Main.ResumeLayout(false);
+            Main.PerformLayout();
+            ControlButtons.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
-        private TableLayoutPanel tableLayoutPanel1;
-        private TableLayoutPanel tableLayoutPanel2;
+        private TableLayoutPanel Main;
+        private TableLayoutPanel ControlButtons;
         private Button Addition;
         private Button Number0;
         private Button Clear;

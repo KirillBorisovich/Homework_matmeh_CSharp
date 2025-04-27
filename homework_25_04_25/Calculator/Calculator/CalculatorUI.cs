@@ -25,7 +25,7 @@ public partial class CalculatorUI : Form
             false,
             DataSourceUpdateMode.OnPropertyChanged);
 
-        foreach (Control control in this.tableLayoutPanel2.Controls)
+        foreach (Control control in this.ControlButtons.Controls)
         {
             if (control is Button button)
             {

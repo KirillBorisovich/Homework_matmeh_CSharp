@@ -2,9 +2,9 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-using System.ComponentModel;
-
 namespace Calculator;
+
+using System.ComponentModel;
 
 /// <summary>
 /// Сalculator business logic.
@@ -16,8 +16,15 @@ public class СalculatorBusinessLogic : INotifyPropertyChanged
     private bool isNewOperation = true;
     private double currentValue = 0;
 
-    public event PropertyChangedEventHandler PropertyChanged;
+    /// <summary>
+    /// Events for notifying the user interface of
+    /// changes in an object's properties.
+    /// </summary>
+    public event PropertyChangedEventHandler? PropertyChanged;
 
+    /// <summary>
+    /// A class property that notifies when something changes.
+    /// </summary>
     public double CurrentValue
     {
         get => this.currentValue;
@@ -112,6 +119,10 @@ public class СalculatorBusinessLogic : INotifyPropertyChanged
         this.isNewOperation = true;
     }
 
+    /// <summary>
+    /// Notify about changes in object properties.
+    /// </summary>
+    /// <param name="propertyName">Property name.</param>
     protected virtual void OnPropertyChanged(string propertyName)
     {
         this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
