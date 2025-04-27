@@ -41,6 +41,10 @@ public partial class CalculatorUI : Form
                 {
                     button.Click += this.NumberButton_Click;
                 }
+                else if (button.Name == "Negative")
+                {
+                    button.Click += this.Negetive_Click;
+                }
                 else
                 {
                     button.Click += this.OperationButton_Click;
@@ -109,5 +113,10 @@ public partial class CalculatorUI : Form
     {
         this.calculator.Clear();
         this.Output.Text = message;
+    }
+
+    private void Negetive_Click(object? sender, EventArgs e)
+    {
+        this.calculator.Negative();
     }
 }

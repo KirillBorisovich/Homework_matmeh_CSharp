@@ -31,21 +31,22 @@
             Main = new TableLayoutPanel();
             ControlButtons = new TableLayoutPanel();
             Equality = new Button();
-            Addition = new Button();
-            Number0 = new Button();
+            Negative = new Button();
             Clear = new Button();
-            Difference = new Button();
-            Number9 = new Button();
-            Number8 = new Button();
-            Number7 = new Button();
-            Multiplication = new Button();
-            Number6 = new Button();
-            Number5 = new Button();
-            Number4 = new Button();
             Division = new Button();
             Number3 = new Button();
             Number2 = new Button();
             Number1 = new Button();
+            Multiplication = new Button();
+            Number6 = new Button();
+            Number5 = new Button();
+            Number4 = new Button();
+            Difference = new Button();
+            Number9 = new Button();
+            Number8 = new Button();
+            Number7 = new Button();
+            Addition = new Button();
+            Number0 = new Button();
             Output = new TextBox();
             Main.SuspendLayout();
             ControlButtons.SuspendLayout();
@@ -73,30 +74,32 @@
             ControlButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             ControlButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             ControlButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            ControlButtons.Controls.Add(Equality, 2, 3);
-            ControlButtons.Controls.Add(Addition, 3, 3);
-            ControlButtons.Controls.Add(Number0, 1, 3);
-            ControlButtons.Controls.Add(Clear, 0, 3);
-            ControlButtons.Controls.Add(Difference, 3, 2);
-            ControlButtons.Controls.Add(Number9, 2, 2);
-            ControlButtons.Controls.Add(Number8, 1, 2);
-            ControlButtons.Controls.Add(Number7, 0, 2);
-            ControlButtons.Controls.Add(Multiplication, 3, 1);
-            ControlButtons.Controls.Add(Number6, 2, 1);
-            ControlButtons.Controls.Add(Number5, 1, 1);
-            ControlButtons.Controls.Add(Number4, 0, 1);
-            ControlButtons.Controls.Add(Division, 3, 0);
-            ControlButtons.Controls.Add(Number3, 2, 0);
-            ControlButtons.Controls.Add(Number2, 1, 0);
-            ControlButtons.Controls.Add(Number1, 0, 0);
+            ControlButtons.Controls.Add(Equality, 3, 0);
+            ControlButtons.Controls.Add(Negative, 1, 0);
+            ControlButtons.Controls.Add(Clear, 0, 0);
+            ControlButtons.Controls.Add(Division, 3, 1);
+            ControlButtons.Controls.Add(Number3, 2, 1);
+            ControlButtons.Controls.Add(Number2, 1, 1);
+            ControlButtons.Controls.Add(Number1, 0, 1);
+            ControlButtons.Controls.Add(Multiplication, 3, 2);
+            ControlButtons.Controls.Add(Number6, 2, 2);
+            ControlButtons.Controls.Add(Number5, 1, 2);
+            ControlButtons.Controls.Add(Number4, 0, 2);
+            ControlButtons.Controls.Add(Difference, 3, 3);
+            ControlButtons.Controls.Add(Number9, 2, 3);
+            ControlButtons.Controls.Add(Number8, 1, 3);
+            ControlButtons.Controls.Add(Number7, 0, 3);
+            ControlButtons.Controls.Add(Addition, 3, 4);
+            ControlButtons.Controls.Add(Number0, 1, 4);
             ControlButtons.Dock = DockStyle.Fill;
             ControlButtons.Location = new Point(3, 111);
             ControlButtons.Name = "ControlButtons";
-            ControlButtons.RowCount = 4;
-            ControlButtons.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            ControlButtons.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            ControlButtons.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            ControlButtons.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            ControlButtons.RowCount = 5;
+            ControlButtons.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            ControlButtons.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            ControlButtons.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            ControlButtons.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            ControlButtons.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
             ControlButtons.Size = new Size(278, 247);
             ControlButtons.TabIndex = 2;
             // 
@@ -104,142 +107,43 @@
             // 
             Equality.Dock = DockStyle.Fill;
             Equality.Font = new Font("Segoe UI", 14F);
-            Equality.Location = new Point(141, 186);
+            Equality.Location = new Point(210, 3);
             Equality.Name = "Equality";
-            Equality.Size = new Size(63, 58);
-            Equality.TabIndex = 14;
+            Equality.Size = new Size(65, 43);
+            Equality.TabIndex = 52;
             Equality.Text = "=";
             Equality.UseVisualStyleBackColor = true;
             // 
-            // Addition
+            // Negative
             // 
-            Addition.Dock = DockStyle.Fill;
-            Addition.Font = new Font("Segoe UI", 14F);
-            Addition.Location = new Point(210, 186);
-            Addition.Name = "Addition";
-            Addition.Size = new Size(65, 58);
-            Addition.TabIndex = 15;
-            Addition.Text = "+";
-            Addition.UseVisualStyleBackColor = true;
-            // 
-            // Number0
-            // 
-            Number0.Dock = DockStyle.Fill;
-            Number0.Font = new Font("Segoe UI", 14F);
-            Number0.Location = new Point(72, 186);
-            Number0.Name = "Number0";
-            Number0.Size = new Size(63, 58);
-            Number0.TabIndex = 13;
-            Number0.Text = "0";
-            Number0.UseVisualStyleBackColor = true;
+            Negative.Dock = DockStyle.Fill;
+            Negative.Font = new Font("Segoe UI", 14F);
+            Negative.Location = new Point(72, 3);
+            Negative.Name = "Negative";
+            Negative.Size = new Size(63, 43);
+            Negative.TabIndex = 50;
+            Negative.Text = "+/-";
+            Negative.UseVisualStyleBackColor = true;
             // 
             // Clear
             // 
             Clear.Dock = DockStyle.Fill;
             Clear.Font = new Font("Segoe UI", 14F);
-            Clear.Location = new Point(3, 186);
+            Clear.Location = new Point(3, 3);
             Clear.Name = "Clear";
-            Clear.Size = new Size(63, 58);
-            Clear.TabIndex = 12;
+            Clear.Size = new Size(63, 43);
+            Clear.TabIndex = 49;
             Clear.Text = "C";
             Clear.UseVisualStyleBackColor = true;
-            // 
-            // Difference
-            // 
-            Difference.Dock = DockStyle.Fill;
-            Difference.Font = new Font("Segoe UI", 14F);
-            Difference.Location = new Point(210, 125);
-            Difference.Name = "Difference";
-            Difference.Size = new Size(65, 55);
-            Difference.TabIndex = 11;
-            Difference.Text = "-";
-            Difference.UseVisualStyleBackColor = true;
-            // 
-            // Number9
-            // 
-            Number9.Dock = DockStyle.Fill;
-            Number9.Font = new Font("Segoe UI", 14F);
-            Number9.Location = new Point(141, 125);
-            Number9.Name = "Number9";
-            Number9.Size = new Size(63, 55);
-            Number9.TabIndex = 10;
-            Number9.Text = "9";
-            Number9.UseVisualStyleBackColor = true;
-            // 
-            // Number8
-            // 
-            Number8.Dock = DockStyle.Fill;
-            Number8.Font = new Font("Segoe UI", 14F);
-            Number8.Location = new Point(72, 125);
-            Number8.Name = "Number8";
-            Number8.Size = new Size(63, 55);
-            Number8.TabIndex = 9;
-            Number8.Text = "8";
-            Number8.UseVisualStyleBackColor = true;
-            // 
-            // Number7
-            // 
-            Number7.Dock = DockStyle.Fill;
-            Number7.Font = new Font("Segoe UI", 14F);
-            Number7.Location = new Point(3, 125);
-            Number7.Name = "Number7";
-            Number7.Size = new Size(63, 55);
-            Number7.TabIndex = 8;
-            Number7.Text = "7";
-            Number7.UseVisualStyleBackColor = true;
-            // 
-            // Multiplication
-            // 
-            Multiplication.Dock = DockStyle.Fill;
-            Multiplication.Font = new Font("Segoe UI", 14F);
-            Multiplication.Location = new Point(210, 64);
-            Multiplication.Name = "Multiplication";
-            Multiplication.Size = new Size(65, 55);
-            Multiplication.TabIndex = 7;
-            Multiplication.Text = "*";
-            Multiplication.UseVisualStyleBackColor = true;
-            // 
-            // Number6
-            // 
-            Number6.Dock = DockStyle.Fill;
-            Number6.Font = new Font("Segoe UI", 14F);
-            Number6.Location = new Point(141, 64);
-            Number6.Name = "Number6";
-            Number6.Size = new Size(63, 55);
-            Number6.TabIndex = 6;
-            Number6.Text = "6";
-            Number6.UseVisualStyleBackColor = true;
-            // 
-            // Number5
-            // 
-            Number5.Dock = DockStyle.Fill;
-            Number5.Font = new Font("Segoe UI", 14F);
-            Number5.Location = new Point(72, 64);
-            Number5.Name = "Number5";
-            Number5.Size = new Size(63, 55);
-            Number5.TabIndex = 5;
-            Number5.Text = "5";
-            Number5.UseVisualStyleBackColor = true;
-            // 
-            // Number4
-            // 
-            Number4.Dock = DockStyle.Fill;
-            Number4.Font = new Font("Segoe UI", 14F);
-            Number4.Location = new Point(3, 64);
-            Number4.Name = "Number4";
-            Number4.Size = new Size(63, 55);
-            Number4.TabIndex = 4;
-            Number4.Text = "4";
-            Number4.UseVisualStyleBackColor = true;
             // 
             // Division
             // 
             Division.Dock = DockStyle.Fill;
             Division.Font = new Font("Segoe UI", 14F);
-            Division.Location = new Point(210, 3);
+            Division.Location = new Point(210, 52);
             Division.Name = "Division";
-            Division.Size = new Size(65, 55);
-            Division.TabIndex = 3;
+            Division.Size = new Size(65, 43);
+            Division.TabIndex = 46;
             Division.Text = "/";
             Division.UseVisualStyleBackColor = true;
             // 
@@ -247,10 +151,10 @@
             // 
             Number3.Dock = DockStyle.Fill;
             Number3.Font = new Font("Segoe UI", 14F);
-            Number3.Location = new Point(141, 3);
+            Number3.Location = new Point(141, 52);
             Number3.Name = "Number3";
-            Number3.Size = new Size(63, 55);
-            Number3.TabIndex = 2;
+            Number3.Size = new Size(63, 43);
+            Number3.TabIndex = 44;
             Number3.Text = "3";
             Number3.UseVisualStyleBackColor = true;
             // 
@@ -258,10 +162,10 @@
             // 
             Number2.Dock = DockStyle.Fill;
             Number2.Font = new Font("Segoe UI", 14F);
-            Number2.Location = new Point(72, 3);
+            Number2.Location = new Point(72, 52);
             Number2.Name = "Number2";
-            Number2.Size = new Size(63, 55);
-            Number2.TabIndex = 1;
+            Number2.Size = new Size(63, 43);
+            Number2.TabIndex = 43;
             Number2.Text = "2";
             Number2.UseVisualStyleBackColor = true;
             // 
@@ -269,12 +173,122 @@
             // 
             Number1.Dock = DockStyle.Fill;
             Number1.Font = new Font("Segoe UI", 14F);
-            Number1.Location = new Point(3, 3);
+            Number1.Location = new Point(3, 52);
             Number1.Name = "Number1";
-            Number1.Size = new Size(63, 55);
-            Number1.TabIndex = 0;
+            Number1.Size = new Size(63, 43);
+            Number1.TabIndex = 41;
             Number1.Text = "1";
             Number1.UseVisualStyleBackColor = true;
+            // 
+            // Multiplication
+            // 
+            Multiplication.Dock = DockStyle.Fill;
+            Multiplication.Font = new Font("Segoe UI", 14F);
+            Multiplication.Location = new Point(210, 101);
+            Multiplication.Name = "Multiplication";
+            Multiplication.Size = new Size(65, 43);
+            Multiplication.TabIndex = 40;
+            Multiplication.Text = "*";
+            Multiplication.UseVisualStyleBackColor = true;
+            // 
+            // Number6
+            // 
+            Number6.Dock = DockStyle.Fill;
+            Number6.Font = new Font("Segoe UI", 14F);
+            Number6.Location = new Point(141, 101);
+            Number6.Name = "Number6";
+            Number6.Size = new Size(63, 43);
+            Number6.TabIndex = 38;
+            Number6.Text = "6";
+            Number6.UseVisualStyleBackColor = true;
+            // 
+            // Number5
+            // 
+            Number5.Dock = DockStyle.Fill;
+            Number5.Font = new Font("Segoe UI", 14F);
+            Number5.Location = new Point(72, 101);
+            Number5.Name = "Number5";
+            Number5.Size = new Size(63, 43);
+            Number5.TabIndex = 37;
+            Number5.Text = "5";
+            Number5.UseVisualStyleBackColor = true;
+            // 
+            // Number4
+            // 
+            Number4.Dock = DockStyle.Fill;
+            Number4.Font = new Font("Segoe UI", 14F);
+            Number4.Location = new Point(3, 101);
+            Number4.Name = "Number4";
+            Number4.Size = new Size(63, 43);
+            Number4.TabIndex = 36;
+            Number4.Text = "4";
+            Number4.UseVisualStyleBackColor = true;
+            // 
+            // Difference
+            // 
+            Difference.Dock = DockStyle.Fill;
+            Difference.Font = new Font("Segoe UI", 14F);
+            Difference.Location = new Point(210, 150);
+            Difference.Name = "Difference";
+            Difference.Size = new Size(65, 43);
+            Difference.TabIndex = 35;
+            Difference.Text = "-";
+            Difference.UseVisualStyleBackColor = true;
+            // 
+            // Number9
+            // 
+            Number9.Dock = DockStyle.Fill;
+            Number9.Font = new Font("Segoe UI", 14F);
+            Number9.Location = new Point(141, 150);
+            Number9.Name = "Number9";
+            Number9.Size = new Size(63, 43);
+            Number9.TabIndex = 34;
+            Number9.Text = "9";
+            Number9.UseVisualStyleBackColor = true;
+            // 
+            // Number8
+            // 
+            Number8.Dock = DockStyle.Fill;
+            Number8.Font = new Font("Segoe UI", 14F);
+            Number8.Location = new Point(72, 150);
+            Number8.Name = "Number8";
+            Number8.Size = new Size(63, 43);
+            Number8.TabIndex = 33;
+            Number8.Text = "8";
+            Number8.UseVisualStyleBackColor = true;
+            // 
+            // Number7
+            // 
+            Number7.Dock = DockStyle.Fill;
+            Number7.Font = new Font("Segoe UI", 14F);
+            Number7.Location = new Point(3, 150);
+            Number7.Name = "Number7";
+            Number7.Size = new Size(63, 43);
+            Number7.TabIndex = 32;
+            Number7.Text = "7";
+            Number7.UseVisualStyleBackColor = true;
+            // 
+            // Addition
+            // 
+            Addition.Dock = DockStyle.Fill;
+            Addition.Font = new Font("Segoe UI", 14F);
+            Addition.Location = new Point(210, 199);
+            Addition.Name = "Addition";
+            Addition.Size = new Size(65, 45);
+            Addition.TabIndex = 30;
+            Addition.Text = "+";
+            Addition.UseVisualStyleBackColor = true;
+            // 
+            // Number0
+            // 
+            Number0.Dock = DockStyle.Fill;
+            Number0.Font = new Font("Segoe UI", 14F);
+            Number0.Location = new Point(72, 199);
+            Number0.Name = "Number0";
+            Number0.Size = new Size(63, 45);
+            Number0.TabIndex = 19;
+            Number0.Text = "0";
+            Number0.UseVisualStyleBackColor = true;
             // 
             // Output
             // 
@@ -307,22 +321,23 @@
 
         private TableLayoutPanel Main;
         private TableLayoutPanel ControlButtons;
-        private Button Addition;
+        private TextBox Output;
         private Button Number0;
+        private Button Equality;
+        private Button Negative;
         private Button Clear;
-        private Button Difference;
-        private Button Number9;
-        private Button Number8;
-        private Button Number7;
-        private Button Multiplication;
-        private Button Number6;
-        private Button Number5;
-        private Button Number4;
         private Button Division;
         private Button Number3;
         private Button Number2;
         private Button Number1;
-        private TextBox Output;
-        private Button Equality;
+        private Button Multiplication;
+        private Button Number6;
+        private Button Number5;
+        private Button Number4;
+        private Button Difference;
+        private Button Number9;
+        private Button Number8;
+        private Button Number7;
+        private Button Addition;
     }
 }

@@ -23,7 +23,7 @@ public class СalculatorBusinessLogic : INotifyPropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
 
     /// <summary>
-    /// A class property that notifies when something changes.
+    /// Gets a class property that notifies when something changes.
     /// </summary>
     public double CurrentValue
     {
@@ -117,6 +117,17 @@ public class СalculatorBusinessLogic : INotifyPropertyChanged
         }
 
         this.isNewOperation = true;
+    }
+
+    /// <summary>
+    /// Opposite sign of a number.
+    /// </summary>
+    public void Negative()
+    {
+        if (this.CurrentValue != 0)
+        {
+            this.CurrentValue = -this.CurrentValue;
+        }
     }
 
     /// <summary>

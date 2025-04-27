@@ -38,14 +38,15 @@ public class СalculatorBusinessLogicTests
 
         this.calculator.EnterOperation("/");
         this.calculator.EnterNumber("-2");
+        this.calculator.Negative();
         this.calculator.Calculate();
-        if (this.calculator.CurrentValue != -15.0)
+        if (this.calculator.CurrentValue != 15.0)
         {
             Assert.Fail();
         }
 
         this.calculator.EnterOperation("*");
-        this.calculator.EnterNumber("-3");
+        this.calculator.EnterNumber("3");
         this.calculator.Calculate();
         if (this.calculator.CurrentValue != 45.0)
         {
