@@ -46,6 +46,7 @@
             Number2 = new Button();
             Number1 = new Button();
             Output = new TextBox();
+            Equality = new Button();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
@@ -72,6 +73,7 @@
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutPanel2.Controls.Add(Equality, 2, 3);
             tableLayoutPanel2.Controls.Add(Addition, 3, 3);
             tableLayoutPanel2.Controls.Add(Number0, 1, 3);
             tableLayoutPanel2.Controls.Add(Clear, 0, 3);
@@ -276,6 +278,17 @@
             Output.Text = "0";
             Output.TextAlign = HorizontalAlignment.Right;
             // 
+            // Equality
+            // 
+            Equality.Dock = DockStyle.Fill;
+            Equality.Font = new Font("Segoe UI", 14F);
+            Equality.Location = new Point(141, 186);
+            Equality.Name = "Equality";
+            Equality.Size = new Size(63, 58);
+            Equality.TabIndex = 16;
+            Equality.Text = "=";
+            Equality.UseVisualStyleBackColor = true;
+            // 
             // CalculatorUI
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -311,5 +324,6 @@
         private Button Number2;
         private Button Number1;
         private TextBox Output;
+        private Button Equality;
     }
 }
