@@ -6,3 +6,4 @@
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Justification = "<Ожидание>", Scope = "type", Target = "~T:Calculator.Tests.СalculatorBusinessLogicTests")]
+[assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Justification = "<Ожидание>", Scope = "type", Target = "~T:Calculator.Tests.CalculatorBusinessLogicTests")]
