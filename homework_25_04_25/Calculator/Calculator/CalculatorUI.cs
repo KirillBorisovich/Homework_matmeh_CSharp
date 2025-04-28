@@ -9,7 +9,7 @@ namespace Calculator;
 /// </summary>
 public partial class CalculatorUI : Form
 {
-    private CalculatorBusinessLogic calculator = new();
+    private Calculator.CalculatorBusinessLogic calculator = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CalculatorUI"/> class.
