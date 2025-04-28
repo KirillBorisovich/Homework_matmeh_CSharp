@@ -6,7 +6,7 @@ namespace Calculator.Tests;
 
 public class СalculatorBusinessLogicTests
 {
-    private СalculatorBusinessLogic calculator;
+    private CalculatorBusinessLogic calculator;
 
     [SetUp]
     public void Setup()
