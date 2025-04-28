@@ -139,3 +139,4 @@ public class CalculatorBusinessLogic : INotifyPropertyChanged
         this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
+
