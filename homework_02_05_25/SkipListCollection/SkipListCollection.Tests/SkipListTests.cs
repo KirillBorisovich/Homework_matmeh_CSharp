@@ -1,6 +1,6 @@
 ﻿namespace SkipListCollection.Tests
 {
-    public class Tests
+    public class SkipListTests
     {
         [SetUp]
         public void Setup()
