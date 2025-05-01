@@ -5,6 +5,7 @@
 namespace SkipListCollection;
 
 using System.Collections;
+using System.Net.Http.Headers;
 
 /// <summary>
 /// Generic collection skip list.
@@ -12,7 +13,8 @@ using System.Collections;
 /// <typeparam name="T">The type of elements in the collection.</typeparam>
 public class SkipList<T>(IComparer<T>? inputComparer = null) : IList<T>
 {
-    private static readonly int MaxLevel = 32;
+    private static readonly int MaxLevel = 4;
+    private readonly SkipListState state = new();
     private IComparer<T> comparer = inputComparer ?? Comparer<T>.Default;
     private Random rand = new();
     private Node?[] head = new Node?[MaxLevel];
@@ -47,6 +49,7 @@ public class SkipList<T>(IComparer<T>? inputComparer = null) : IList<T>
             }
 
             var enumerator = this.GetEnumerator();
+            enumerator.MoveNext();
             for (var i = 0; i < index; i++)
             {
                 enumerator.MoveNext();
@@ -65,7 +68,7 @@ public class SkipList<T>(IComparer<T>? inputComparer = null) : IList<T>
     /// to iterate through the collection.</returns>
     public IEnumerator<T> GetEnumerator()
     {
-        return new SkipListEnumerator(this.head);
+        return new SkipListEnumerator(this.state, this.head);
     }
 
     /// <summary>
@@ -86,14 +89,17 @@ public class SkipList<T>(IComparer<T>? inputComparer = null) : IList<T>
     /// found in the list; otherwise, -1.</returns>
     public int IndexOf(T value)
     {
+        this.IncrementVersion();
         var enumerator = this.GetEnumerator();
+        enumerator.MoveNext();
         for (var i = 0; i < this.Count; i++)
         {
-            enumerator.MoveNext();
             if (this.Compare(enumerator.Current, value) == 0)
             {
                 return i;
             }
+
+            enumerator.MoveNext();
         }
 
         return -1;
@@ -111,11 +117,19 @@ public class SkipList<T>(IComparer<T>? inputComparer = null) : IList<T>
         throw new NotSupportedException();
     }
 
+    /// <summary>
+    /// Removes the SkipList item at the specified index.
+    /// </summary>
+    /// <param name="index">Index of the element to be removed.</param>
+    /// <exception cref="NotSupportedException">
+    /// Collection is read-only exception.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Incorrect arguments exception.</exception>
     public void RemoveAt(int index)
     {
         if (this.IsReadOnly)
         {
-            throw new NotSupportedException("Collection is read-only.");
+            throw new NotSupportedException();
         }
 
         if (index > this.Count || index < 0)
@@ -124,7 +138,10 @@ public class SkipList<T>(IComparer<T>? inputComparer = null) : IList<T>
         }
 
         var value = this[index];
-        this.Remove(value);
+        if (this.Remove(value))
+        {
+            this.IncrementVersion();
+        }
     }
 
     /// <summary>
@@ -144,17 +161,21 @@ public class SkipList<T>(IComparer<T>? inputComparer = null) : IList<T>
         Node node = new(nodeLevel, value);
         var update = new Node[MaxLevel];
 
-        this.Count++;
-
         if (this.FindElement(update, node.Value) != null)
         {
             return;
         }
 
-        for (var i = MaxLevel - nodeLevel; i < MaxLevel; i++)
+        this.IncrementVersion();
+
+        this.Count++;
+
+        for (var i = nodeLevel - 1; i >= 0; i--)
         {
             if (update[i] == null)
             {
+                node.Next[i] = this.head[i];
+                this.head[i] = node;
                 continue;
             }
 
@@ -186,21 +207,20 @@ public class SkipList<T>(IComparer<T>? inputComparer = null) : IList<T>
             return false;
         }
 
-        for (var i = MaxLevel - node.Next.Length; i < MaxLevel; i++)
+        for (var i = node.Next.Length - 1; i >= 0; i--)
         {
-            if (update[i] != null)
+            if (this.head[i] == node)
             {
-                update[i].Next[i] = node.Next[i];
+                this.head[i] = node.Next[i];
+                continue;
             }
-        }
 
-        for (var i = 0; i < node.Next.Length; i++)
-        {
+            update[i].Next[i] = node.Next[i];
             node.Next[i] = null;
         }
 
         this.Count--;
-
+        this.IncrementVersion();
         return true;
     }
 
@@ -211,6 +231,7 @@ public class SkipList<T>(IComparer<T>? inputComparer = null) : IList<T>
     /// Collection is read-only exception.</exception>
     public void Clear()
     {
+        this.IncrementVersion();
         if (this.IsReadOnly)
         {
             throw new NotSupportedException();
@@ -266,58 +287,58 @@ public class SkipList<T>(IComparer<T>? inputComparer = null) : IList<T>
         var next = this.head;
         for (var i = 0; i < this.Count; i++)
         {
-            array[i] = next[^1]!.Value;
-            next = next[^1]!.Next;
+            array[i] = next[0]!.Value;
+            next = next[0]!.Next;
         }
     }
 
-    private Node? FindElement(Node[] update, T value)
+    private Node? FindElement(Node?[] update, T value)
     {
-        Node? visitedNode = null;
+        Node? result = null;
+        var updateCounter = MaxLevel - 1;
+        Node? visited = null;
         var next = this.head;
-
-        for (var i = 0; i < MaxLevel; i++)
+        for (var i = next.Length - 1; i >= 0; i--)
         {
             var nextNode = next[i];
             if (nextNode == null)
             {
+                update[updateCounter] = visited;
+                updateCounter--;
                 continue;
             }
 
-            var compare = this.Compare(nextNode.Value, value);
-            while (compare < 0)
+            var compare = this.Compare(value, nextNode.Value);
+            while (compare > 0)
             {
-                visitedNode = next[i];
+                visited = nextNode;
                 next = nextNode.Next;
-
-                if (next[i] == null)
+                nextNode = nextNode.Next[i];
+                if (nextNode == null)
                 {
-                    compare = 1;
+                    compare = -1;
                     break;
                 }
 
-                compare = this.Compare(nextNode.Value, value);
+                compare = this.Compare(value, nextNode.Value);
             }
 
-            switch (compare)
-            {
-                case 0:
-                    return next[i];
-                case 1:
-                    if (visitedNode != null)
-                    {
-                        update[i] = visitedNode;
-                    }
+            update[updateCounter] = visited;
+            updateCounter--;
 
-                    continue;
+            if (compare == 0)
+            {
+                result = nextNode;
             }
         }
 
-        return null;
+        return result;
     }
 
     private int Compare(T a, T b)
         => this.comparer.Compare(a, b);
+
+    private void IncrementVersion() => this.state.CurrentVersion++;
 
     private int GetNodeLevel()
     {
@@ -335,8 +356,10 @@ public class SkipList<T>(IComparer<T>? inputComparer = null) : IList<T>
         return count;
     }
 
-    private class SkipListEnumerator(Node?[] inputArray) : IEnumerator<T>
+    private class SkipListEnumerator(SkipListState state, Node?[] inputArray)
+        : IEnumerator<T>
     {
+        private readonly int initialNumberOfChanges = state.CurrentVersion;
         private Node?[] head = inputArray;
         private Node? currentNode = null;
         private bool disposed;
@@ -364,6 +387,11 @@ public class SkipList<T>(IComparer<T>? inputComparer = null) : IList<T>
 
         public bool MoveNext()
         {
+            if (this.initialNumberOfChanges != state.CurrentVersion)
+            {
+                throw new NotSupportedException();
+            }
+
             if (this.disposed)
             {
                 return false;
@@ -371,11 +399,11 @@ public class SkipList<T>(IComparer<T>? inputComparer = null) : IList<T>
 
             if (this.currentNode == null)
             {
-                this.currentNode = this.head[^1];
+                this.currentNode = this.head[0];
             }
             else
             {
-                this.currentNode = this.currentNode.Next[^1];
+                this.currentNode = this.currentNode.Next[0];
             }
 
             return this.currentNode != null;
@@ -410,5 +438,10 @@ public class SkipList<T>(IComparer<T>? inputComparer = null) : IList<T>
         public T Value { get; set; } = value;
 
         public Node?[] Next { get; } = new Node?[level];
+    }
+
+    private class SkipListState
+    {
+        public int CurrentVersion { get; set; } = int.MinValue;
     }
 }

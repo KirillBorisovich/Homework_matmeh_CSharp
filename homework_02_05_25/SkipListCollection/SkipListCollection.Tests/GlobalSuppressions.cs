@@ -6,3 +6,4 @@
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1633:File should have header", Justification = "<Ожидание>", Scope = "namespace", Target = "~N:SkipListCollection.Tests")]
+[assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Justification = "<Ожидание>", Scope = "type", Target = "~T:SkipListCollection.Tests.SkipListTests")]
