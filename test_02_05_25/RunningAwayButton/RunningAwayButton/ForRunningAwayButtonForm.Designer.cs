@@ -52,7 +52,7 @@ partial class ForRunningAwayButtonForm
         MinimumSize = new Size(400, 400);
         Name = "ForRunningAwayButtonForm";
         Text = "Form1";
-        Resize += ForRunningAwayButtonForm_Resize;
+        ResizeEnd += ForRunningAwayButtonForm_ResizeEnd;
         ResumeLayout(false);
     }
 
