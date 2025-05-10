@@ -13,7 +13,7 @@ using System.Net.Http.Headers;
 /// <typeparam name="T">The type of elements in the collection.</typeparam>
 public class SkipList<T>(IComparer<T>? inputComparer = null) : IList<T>
 {
-    private static readonly int MaxLevel = 4;
+    private static readonly int MaxLevel = 32;
     private readonly SkipListState state = new();
     private IComparer<T> comparer = inputComparer ?? Comparer<T>.Default;
     private Random rand = new();
