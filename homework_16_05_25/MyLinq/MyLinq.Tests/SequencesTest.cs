@@ -36,14 +36,43 @@ public class SequencesTest
         Assert.That(expected, Is.EqualTo(actual));
     }
 
+    [Test]
+    public void TakeNullReferenceExceptionTest()
+    {
+        IEnumerable<int>? nullSequence = null;
+        Assert.Throws<NullReferenceException>(()
+            => nullSequence!.Take(1).ToList());
+    }
 
     [Test]
-    public void SKipTest()
+    public void TakeArgumentOutOfRangeExceptionTest()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(()
+            => this.array.Take(-1).ToList());
+    }
+
+    [Test]
+    public void SkipTest()
     {
         var expected = new[] { 3, 4, 5 };
         var actual = this.array.Skip(2);
 
         Assert.That(expected, Is.EqualTo(actual));
+    }
+
+    [Test]
+    public void SkipNullReferenceExceptionTest()
+    {
+        IEnumerable<int>? nullSequence = null;
+        Assert.Throws<NullReferenceException>(()
+            => nullSequence!.Skip(1).ToList());
+    }
+
+    [Test]
+    public void SkipArgumentOutOfRangeExceptionTest()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(()
+            => this.array.Skip(-1).ToList());
     }
 
     [Test]

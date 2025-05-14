@@ -61,7 +61,7 @@ public static class Sequences
     /// <returns>Subsequences of a sequence.</returns>
     /// <exception cref="NullReferenceException">Zero sequence
     /// transmitted.</exception>
-    /// <exception cref="FormatException">Invalid parameter passed.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Invalid parameter passed.</exception>
     public static IEnumerable<T> Take<T>(this IEnumerable<T> seq, int n)
     {
         if (seq == null)
@@ -89,6 +89,8 @@ public static class Sequences
     /// subsequence must be returned.</param>
     /// <param name="n">The number of the element to skip to</param>
     /// <returns>Subsequences of a sequence.</returns>
+    /// <exception cref="NullReferenceException">Zero sequence
+    /// transmitted.</exception>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Invalid parameter passed.</exception>
     public static IEnumerable<T> Skip<T>(this IEnumerable<T> seq, int n)
