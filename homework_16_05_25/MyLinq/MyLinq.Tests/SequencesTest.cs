@@ -4,11 +4,6 @@ public class SequencesTest
 {
     private int[] array = new int[] { 1, 2, 3, 4, 5 };
 
-    [SetUp]
-    public void Setup()
-    {
-    }
-
     [Test]
     public void GetPrimesTest()
     {
@@ -35,49 +30,28 @@ public class SequencesTest
     [Test]
     public void TakeTest()
     {
-        var elementNumber = 3;
-        var counter = 0;
-        foreach (var item in Sequences.Take(this.array, elementNumber))
-        {
-            if (item != this.array[counter] || counter > elementNumber)
-            {
-                Assert.Fail();
-            }
+        var expected = new[] { 1, 2, 3 };
+        var actual = this.array.Take(3);
 
-            counter++;
-        }
-
-        Assert.Pass();
+        Assert.That(expected, Is.EqualTo(actual));
     }
 
-    [Test]
-    public void TakeNullReferenceExceptionTest()
-    {
-        Assert.Throws<ArgumentOutOfRangeException>(() =>
-        {
-            foreach (var item in Sequences.Take(this.array, 6))
-            {
-                var i = item;
-            }
-        });
-    }
 
     [Test]
     public void SKipTest()
     {
-        var elementNumber = 2;
-        var counter = 0;
-        foreach (var item in Sequences.Skip(this.array, elementNumber))
-        {
-            if (item != this.array[counter + 1] ||
-                counter > this.array.Length - elementNumber)
-            {
-                Assert.Fail();
-            }
+        var expected = new[] { 3, 4, 5 };
+        var actual = this.array.Skip(2);
 
-            counter++;
-        }
+        Assert.That(expected, Is.EqualTo(actual));
+    }
 
-        Assert.Pass();
+    [Test]
+    public void TheUseOfTwoOperationsTest()
+    {
+        var expected = new[] { 2, 3, 4 };
+        var actual = this.array.Skip(1).Take(3).ToArray();
+
+        Assert.That(expected, Is.EqualTo(actual));
     }
 }

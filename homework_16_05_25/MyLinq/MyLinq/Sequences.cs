@@ -64,24 +64,21 @@ public static class Sequences
     /// <exception cref="FormatException">Invalid parameter passed.</exception>
     public static IEnumerable<T> Take<T>(this IEnumerable<T> seq, int n)
     {
+        if (seq == null)
+        {
+            throw new NullReferenceException();
+        }
+
         if (n < 0)
         {
             throw new ArgumentOutOfRangeException();
         }
 
-        var counter = 0;
-        var enumerator = seq.GetEnumerator();
-        do
+        using var enumerator = seq.GetEnumerator();
+        for (var i = 0; i < n && enumerator.MoveNext(); i++)
         {
-            if (!enumerator.MoveNext() && counter < n)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
-
             yield return enumerator.Current;
-            counter++;
         }
-        while (counter < n);
     }
 
     /// <summary>
@@ -96,15 +93,20 @@ public static class Sequences
     /// Invalid parameter passed.</exception>
     public static IEnumerable<T> Skip<T>(this IEnumerable<T> seq, int n)
     {
-        var counter = 0;
-        var enumerator = seq.GetEnumerator();
-        do
+        if (seq == null)
         {
-            if (!enumerator.MoveNext() && counter < n)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
+            throw new NullReferenceException();
+        }
 
+        if (n < 0)
+        {
+            throw new ArgumentOutOfRangeException();
+        }
+
+        var counter = 0;
+        using var enumerator = seq.GetEnumerator();
+        while (enumerator.MoveNext())
+        {
             if (counter < n)
             {
                 counter++;
@@ -112,8 +114,6 @@ public static class Sequences
             }
 
             yield return enumerator.Current;
-            counter++;
         }
-        while (counter < n);
     }
 }
