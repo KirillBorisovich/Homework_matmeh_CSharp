@@ -1,13 +1,7 @@
-isGitRepository() {
-    git rev-parse --git-dir &> \dev\null
-}
-
-setPrompt() {
-    if isGitRepository; then
-        PS1="[Modified files: $(git diff --name-only | wc -l)]"
+PS1='[$(
+    if git status >/dev/null 2>&1; then 
+        echo "Modified files: $(git diff --name-only 2>/dev/null | wc -l)";
     else
-        PS1="[Free: $(df -h . | awk 'NR==2 {print $4}'), Files: $(ls -1 | wc -l)] "
+        echo "Free: $(df -h --output=avail . | tail -n1), Files: $(ls | wc -l)";
     fi
-}
-
-PROMPT_COMMAND=setPrompt
+)] '
