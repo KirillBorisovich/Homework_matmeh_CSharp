@@ -9,22 +9,39 @@ jobs:
       with:
         dotnet-version: '9.x'
         
-    - name: Build
-      run: for f in $(find . -name "*.sln"); do dotnet build $f; done
+    - name: Build (exclude Calculator)
+      run: |
+        for f in $(find . -name "*.sln"); do
+          if [[ ! $f =~ "Calculator" ]]; then
+            dotnet build $f
+          else
+            echo "Skipping Calculator project build on Linux"
+          fi
+        done
 
-    - name: Run tests
-      run: for f in $(find . -name "*.sln"); do dotnet test $f; done
+    - name: Run tests (exclude Calculator)
+      run: |
+        for f in $(find . -name "*.sln"); do
+          if [[ ! $f =~ "Calculator" ]]; then
+            dotnet test $f
+          fi
+        done
 
   build-windows:
     runs-on: windows-latest
+
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '9.x'
 
-    - name: Build
-      run: Get-ChildItem -Recurse -Filter *.sln | ForEach-Object { dotnet build $_.FullName --configuration Release }
-
-    - name: Run tests
-      run: Get-ChildItem -Recurse -Filter *.sln | ForEach-Object { dotnet test $_.FullName --no-build --configuration Release } 
+    - name: Build and Test
+      shell: pwsh
+      run: |
+        Get-ChildItem -Recurse -Filter *.sln | ForEach-Object {
+          dotnet build $_.FullName
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          dotnet test $_.FullName --no-build
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        }
