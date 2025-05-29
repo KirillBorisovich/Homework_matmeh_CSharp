@@ -15,6 +15,12 @@
 
 ### [Задание 5: Роутеры](https://github.com/KirillBorisovich/Homework_matmeh_CSharp/tree/Routers)
 
-### [Задание 6: Дерево разбора](https://github.com/KirillBorisovich/Homework_matmeh_CSharp/tree/test_11_04_25/test_11_04_25/Queue)
+### [Задание 6: Дерево разбора](https://github.com/KirillBorisovich/Homework_matmeh_CSharp/tree/ParseTree/homework_04_04_25/ParseTreeTask)
 
 ### [Задание 7: Лямбда функции](https://github.com/KirillBorisovich/Homework_matmeh_CSharp/tree/LambdaFunctions/homework_11_04_25/MapFilterFold)
+
+### [Задание 8: Калькулятор](https://github.com/KirillBorisovich/Homework_matmeh_CSharp/tree/Calculator/homework_25_04_25/Calculator)
+
+### [Задание 9: Список с пропусками](https://github.com/KirillBorisovich/Homework_matmeh_CSharp/tree/SkipList/homework_02_05_25/SkipListCollection)
+
+### [Задание 10: MyLinq](https://github.com/KirillBorisovich/Homework_matmeh_CSharp/tree/MyLinq/homework_16_05_25/MyLinq)
