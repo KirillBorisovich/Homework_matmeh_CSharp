@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# SA1507: Code should not contain multiple blank lines in a row
+dotnet_diagnostic.SA0001.severity = none
