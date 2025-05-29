@@ -3,7 +3,7 @@
 /// <summary>
 /// Transformations over list.
 /// </summary>
-public class Transformations
+public static class Transformations
 {
     /// <summary>
     /// Transform each element of a list.
@@ -13,11 +13,11 @@ public class Transformations
     /// <returns>Transformed list.</returns>
     public static List<int> Map(List<int> list, Func<int, int> function)
     {
-        List<int> result = new(list);
+        List<int> result = new();
 
         for (var i = 0; i < list.Count; i++)
         {
-            result[i] = function(result[i]);
+            result.Add(function(list[i]));
         }
 
         return result;
