@@ -12,7 +12,7 @@ jobs:
     - name: Build (exclude Calculator and RunningAwayButton)
       run: |
         for f in $(find . -name "*.sln"); do
-          if [[ ! $f =~ "Calculator" && ! $f =~ "RunningAwayButton" ! $f =~ "TicTacToe" ]]; then
+          if [[ ! $f =~ "Calculator" && ! $f =~ "RunningAwayButton" && ! $f =~ "TicTacToe" ]]; then
             dotnet build $f
           else
             echo "Skipping $f build on Linux"
