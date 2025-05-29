@@ -1,4 +1,8 @@
-﻿namespace ParseTreeTask;
+﻿// <copyright file="Calc.cs" company="Bengya Kirill">
+// Copyright (c) Bengya Kirill under MIT License.
+// </copyright>
+
+namespace ParseTreeTask;
 
 /// <summary>
 /// Resolving expressions in a parse tree.

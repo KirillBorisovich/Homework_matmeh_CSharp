@@ -1,4 +1,8 @@
-﻿namespace ParseTreeTask;
+﻿// <copyright file="ParseTree.cs" company="Bengya Kirill">
+// Copyright (c) Bengya Kirill under MIT License.
+// </copyright>
+
+namespace ParseTreeTask;
 
 /// <summary>
 /// Parse tree for evaluating arithmetic expressions.
