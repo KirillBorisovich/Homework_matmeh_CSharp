@@ -1,0 +1,13 @@
+﻿[*.cs]
+
+# SA1600: Elements should be documented
+dotnet_diagnostic.SA1600.severity = none
+
+# SA1400: Access modifier should be declared
+dotnet_diagnostic.SA1400.severity = none
+
+# SA1636: File header copyright text should match
+dotnet_diagnostic.SA1636.severity = none
+
+# SA1638: File header file name documentation should match file name
+dotnet_diagnostic.SA1638.severity = none
