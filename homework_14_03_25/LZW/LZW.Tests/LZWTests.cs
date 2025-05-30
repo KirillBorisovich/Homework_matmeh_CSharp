@@ -11,7 +11,7 @@ public class LZWTests
     {
         LZWTransform.Compress(@"../../../testCompress.txt");
         File.Copy(@"../../../testCompress.txt", @"../../../testCompressOriginal.txt", true);
-        LZWTransform.Uncompress(@"..\..\..\testCompress.txt.zipped");
+        LZWTransform.Uncompress(@"../../../testCompress.txt.zipped");
 
         using (FileStream fstreamToRead1 = new FileStream(@"../../../testCompress.txt", FileMode.Open))
         {
