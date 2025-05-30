@@ -6,24 +6,24 @@ namespace BubbleSort.Tests;
 
 public class ListUltisTests
 {
-    private MyList<int> list = new();
+    private MyList<int> inputList = new();
 
     [SetUp]
     public void SetUp()
     {
-        this.list.Add(3);
-        this.list.Add(1);
-        this.list.Add(4);
-        this.list.Add(2);
+        this.inputList.Add(3);
+        this.inputList.Add(1);
+        this.inputList.Add(4);
+        this.inputList.Add(2);
     }
 
     [Test]
     public void SortTest()
     {
-        ListUtils.Sort(this.list);
-        for (var i = 0; i < this.list.Count; i++)
+        var list = ListUtils.Sort(this.inputList);
+        for (var i = 0; i < list.Count; i++)
         {
-            if (this.list[i] != i + 1)
+            if (list[i] != i + 1)
             {
                 Assert.Fail();
             }

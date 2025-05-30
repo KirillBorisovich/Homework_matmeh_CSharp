@@ -17,8 +17,16 @@ public static class ListUtils
     /// <param name="list">Sorting list.</param>
     /// <param name="comparer">
     /// Comparator for comparing elements.</param>
-    public static void Sort<T>(this MyList<T> list, IComparer<T>? comparer = null)
+    /// <returns>Result list.</returns>
+    public static MyList<T> Sort<T>(this MyList<T> inputList, IComparer<T>? comparer = null)
     {
+        MyList<T> list = new();
+
+        for (var i = 0; i < inputList.Count; i++)
+        {
+            list.Add(inputList[i]);
+        }
+
         if (list == null)
         {
             throw new ArgumentNullException();
@@ -44,5 +52,7 @@ public static class ListUtils
                 break;
             }
         }
+
+        return list;
     }
 }
