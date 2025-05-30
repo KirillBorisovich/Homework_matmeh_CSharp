@@ -1,6 +1,10 @@
-﻿namespace LZW.Tests;
+﻿// <copyright file="BWTTests.cs" company="Bengya Kirill">
+// Copyright (c) Bengya Kirill under MIT License.
+// </copyright>
 
-class BWTTests
+namespace LZW.Tests;
+
+public class BWTTests
 {
     [Test]
     public void TestAllBWT()

@@ -1,5 +1,5 @@
-﻿// <copyright file="BWT.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿// <copyright file="BWT.cs" company="Bengya Kirill">
+// Copyright (c) Bengya Kirill under MIT License.
 // </copyright>
 
 namespace LZW;

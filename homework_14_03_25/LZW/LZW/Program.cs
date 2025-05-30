@@ -1,5 +1,5 @@
-﻿// <copyright file="Program.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿// <copyright file="Program.cs" company="Bengya Kirill">
+// Copyright (c) Bengya Kirill under MIT License.
 // </copyright>
 
 using LZW;

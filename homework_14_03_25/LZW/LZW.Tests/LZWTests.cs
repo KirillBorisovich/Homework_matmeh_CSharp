@@ -1,8 +1,10 @@
-﻿using System.IO;
+﻿// <copyright file="LZWTests.cs" company="Bengya Kirill">
+// Copyright (c) Bengya Kirill under MIT License.
+// </copyright>
 
 namespace LZW.Tests;
 
-class LZWTests
+public class LZWTests
 {
     [Test]
     public void TestCompressAndUncompress()
