@@ -6,11 +6,12 @@ namespace BubbleSort.Tests;
 
 public class MyListTests
 {
-    private MyList<int> list = new();
+    private MyList<int> list;
 
     [SetUp]
     public void Setup()
     {
+        this.list = new();
         this.list.Add(1);
         this.list.Add(2);
         this.list.Add(3);
