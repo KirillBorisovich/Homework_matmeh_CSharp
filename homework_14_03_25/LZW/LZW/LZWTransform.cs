@@ -326,7 +326,7 @@ public class LZWTransform
     {
         var i = path.Length - 1;
         List<char> name = new();
-        while (!path[i].Equals('/'))
+        while (i > 0 && !path[i].Equals('/'))
         {
             name.Add(path[i]);
             i--;
