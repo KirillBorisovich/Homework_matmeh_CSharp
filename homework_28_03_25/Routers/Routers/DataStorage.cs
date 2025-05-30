@@ -1,4 +1,8 @@
-﻿namespace Routers;
+﻿// <copyright file="DataStorage.cs" company="Bengya Kirill">
+// Copyright (c) Bengya Kirill under MIT License.
+// </copyright>
+
+namespace Routers;
 
 /// <summary>
 /// Storing data about router connections.

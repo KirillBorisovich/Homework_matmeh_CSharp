@@ -1,25 +1,28 @@
-﻿namespace Routers.Tests
+﻿// <copyright file="DataStorageTest.cs" company="Bengya Kirill">
+// Copyright (c) Bengya Kirill under MIT License.
+// </copyright>
+
+namespace Routers.Tests;
+
+public class DataStorageTest
 {
-    public class DataStorageTest
+    private DataStorage data = new();
+
+    [Test]
+    public void GenerateConfigurationShouldReturnConfigurationIsEmptyExpectionTest()
     {
-        private DataStorage data = new();
+        Assert.Throws<ConfigurationIsEmptyExpection>(
+            () => this.data.GenerateConfiguration());
+    }
 
-        [Test]
-        public void GenerateConfigurationShouldReturnConfigurationIsEmptyExpectionTest()
-        {
-            Assert.Throws<ConfigurationIsEmptyExpection>(
-                () => this.data.GenerateConfiguration());
-        }
+    [Test]
+    public void GenerateConfigurationShouldReturnDisconnectedGraphExceptionTest()
+    {
+        ConfigurationFile.Read(
+            "../../../disconnectedGraphInputFile.txt",
+            this.data);
 
-        [Test]
-        public void GenerateConfigurationShouldReturnDisconnectedGraphExceptionTest()
-        {
-            ConfigurationFile.Read(
-                "../../../disconnectedGraphInputFile.txt", 
-                this.data);
-
-            Assert.Throws<DisconnectedGraphException>(
-                () => this.data.GenerateConfiguration());
-        }
+        Assert.Throws<DisconnectedGraphException>(
+            () => this.data.GenerateConfiguration());
     }
 }

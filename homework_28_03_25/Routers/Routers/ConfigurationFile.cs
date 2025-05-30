@@ -1,4 +1,8 @@
-﻿namespace Routers;
+﻿// <copyright file="ConfigurationFile.cs" company="Bengya Kirill">
+// Copyright (c) Bengya Kirill under MIT License.
+// </copyright>
+
+namespace Routers;
 
 /// <summary>
 /// Reading from and writing to a configuration file.

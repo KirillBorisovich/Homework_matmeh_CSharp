@@ -1,4 +1,8 @@
-﻿using Routers;
+﻿// <copyright file="Program.cs" company="Bengya Kirill">
+// Copyright (c) Bengya Kirill under MIT License.
+// </copyright>
+
+using Routers;
 
 var pathToInputFile = args[0];
 var pathToOutputFile = args[1];
