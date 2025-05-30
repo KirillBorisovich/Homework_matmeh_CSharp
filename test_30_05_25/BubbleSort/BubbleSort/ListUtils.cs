@@ -26,7 +26,7 @@ public static class ListUtils
 
         comparer ??= Comparer<T>.Default;
 
-        bool swapped;
+        bool swapped = false;
         for (int i = 0; i < list.Count - 1; i++)
         {
             swapped = false;

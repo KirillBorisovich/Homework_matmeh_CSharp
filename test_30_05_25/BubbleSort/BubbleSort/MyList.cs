@@ -33,7 +33,7 @@ public class MyList<T>
                 throw new ArgumentOutOfRangeException();
             }
 
-            ListNode current = this.head!;
+            var current = this.head!;
             for (int i = 0; i < index; i++)
             {
                 current = current.Next!;
@@ -49,7 +49,7 @@ public class MyList<T>
                 throw new ArgumentOutOfRangeException();
             }
 
-            ListNode current = this.head!;
+            var current = this.head!;
             for (int i = 0; i < index; i++)
             {
                 current = current.Next!;
