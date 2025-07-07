@@ -9,34 +9,35 @@ jobs:
       with:
         dotnet-version: '9.x'
         
-    - name: Build (exclude Calculator)
+    - name: Build (exclude Calculator, RunningAwayButton and TicTacToe)
       run: |
         for f in $(find . -name "*.sln"); do
-          if [[ ! $f =~ "Calculator" ]]; then
+          if [[ ! $f =~ "Calculator" && ! $f =~ "RunningAwayButton" && ! $f =~ "TicTacToe" ]]; then
             dotnet build $f
           else
-            echo "Skipping Calculator project build on Linux"
+            echo "Skipping $f build on Linux"
           fi
         done
 
-    - name: Run tests (exclude Calculator)
+    - name: Run tests (exclude Calculator, RunningAwayButton and TicTacToe)
       run: |
         for f in $(find . -name "*.sln"); do
-          if [[ ! $f =~ "Calculator" ]]; then
+          if [[ ! $f =~ "Calculator" && ! $f =~ "RunningAwayButton" && ! $f =~ "TicTacToe" ]]; then
             dotnet test $f
+          else
+            echo "Skipping $f tests on Linux"
           fi
         done
 
   build-windows:
     runs-on: windows-latest
-
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '9.x'
 
-    - name: Build and Test
+    - name: Build and Test (all projects)
       shell: pwsh
       run: |
         Get-ChildItem -Recurse -Filter *.sln | ForEach-Object {
